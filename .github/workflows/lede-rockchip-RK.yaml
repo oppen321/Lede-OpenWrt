@@ -8,8 +8,7 @@ on:
 env:
   REPO_URL: https://github.com/DHDAXCW/lede-rockchip
   REPO_BRANCH: stable
-  CONFIG_FILE: configs/rockchip.config
-  EXTRA_CONFIG: configs/extra.config
+  CONFIG_FILE: configs/RK.config
   DIY_SCRIPT: diy-script.sh
   CLASH_KERNEL: arm64
   CACHE_TOOLCHAIN: true
