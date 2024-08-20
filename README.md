@@ -1,6 +1,6 @@
 # Lede-OpenWrt 在线编译项目
 
-![Lede-OpenWrt](https://openwrt.org/_media/logo.png)
+![Lede-OpenWrt](https://cdn.jsdelivr.net/gh/haiibo/OpenWrt/images/openwrt.png)
 
 ## 项目简介
 
