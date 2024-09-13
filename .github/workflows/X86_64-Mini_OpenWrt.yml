@@ -7,7 +7,7 @@ on:
 
 env:
   REPO_URL: https://github.com/oppen321/lede
-  REPO_BRANCH: main
+  REPO_BRANCH: master
   CONFIG_FILE: configs/x86_64-mini.config
   DIY_SCRIPT: diy-mini.sh
   CLASH_KERNEL: amd64
