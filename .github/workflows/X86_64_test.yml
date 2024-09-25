@@ -1,4 +1,4 @@
-name: X86_64_Mini_OpenWrt
+name: X86_64_test_OpenWrt
 
 on:
   workflow_dispatch:
@@ -145,7 +145,7 @@ jobs:
         fi
         curl -s -X POST https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage \
         -d chat_id=$TELEGRAM_CHAT_ID \
-        -d text="🔔 编译结束: ${STATUS} \n设备: ${DEVICE_TARGET} (${DEVICE_SUBTARGET})"
+        -d text="🔔 编译结束: ${STATUS} \n设备: ${DEVICE_TARGET} (${DEVICE_SUBTARGET})"     
 
     - name: Check Space Usage
       if: (!cancelled())
@@ -175,4 +175,28 @@ jobs:
         name: ${{ env.SOURCE_REPO }}-firmware-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE_PATH }}
 
-    -
+    - name: Upload Firmware To Release
+      if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE == 'true'
+      uses: ncipollo/release-action@v1
+      with:
+        name: R${{ env.DATE }} for ${{ env.FIRMWARE_TAG }}
+        allowUpdates: true
+        tag: ${{ env.FIRMWARE_TAG }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+        artifacts: ${{ env.FIRMWARE_PATH }}/*
+        body: |
+          **This is OpenWrt Firmware for ${{ env.FIRMWARE_TAG }}**
+          ### 📒 固件信息
+          - 💻 平台架构: ${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}
+          - ⚽ 固件源码: ${{ env.REPO_URL }}
+          - 💝 源码分支: ${{ env.REPO_BRANCH }}
+          - 🚀 内核版本: ${{ env.KERNEL }}
+          - 🌐 默认地址: 10.0.0.1
+          - 🔑 默认密码: password
+          ### 🧊 固件版本
+          - 固件编译前最后一次➦[主源码](${{ env.REPO_URL }})更新记录
+          - ${{ env.COMMIT_AUTHOR }}
+          - ${{ env.COMMIT_DATE }}
+          - ${{ env.COMMIT_MESSAGE }}
+          - ${{ env.COMMIT_HASH }}
+    
