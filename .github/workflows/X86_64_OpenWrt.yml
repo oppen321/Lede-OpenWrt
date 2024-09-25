@@ -51,6 +51,12 @@ jobs:
         sudo -E apt-get -y install clang
         sudo timedatectl set-timezone "$TZ"
 
+    - name: Notify Start Compilation
+      run: |
+        curl -k --data chat_id=${{ secrets.TELEGRAM_CHAT_ID }} --data "text=主人：正在使用$(cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c | sed 's/^\s*//')为您编译新的${{ env.FIRMWARE_TAG }}，请耐心等待...... 😋💐,务必注意CPU性能！已知CPU型号（降序）：7763，8370C，8272CL，8171M，E5-2673." "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage"
+
+    - name: Clone Source Code        
+
     - name: Combine Disks
       uses: easimon/maximize-build-space@master
       with:
@@ -133,6 +139,15 @@ jobs:
         echo "status=success" >> $GITHUB_OUTPUT
         echo "DATE=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
         echo "FILE_DATE=$(date +"%Y.%m.%d")" >> $GITHUB_ENV
+
+    - name: Notify End Compilation
+      run: |
+        if [[ "${{ steps.compile.outputs.status }}" == "success" ]]; then
+          STATUS="成功"
+        else
+          STATUS="失败"
+        fi
+        curl -k --data chat_id=${{ secrets.TELEGRAM_CHAT_ID }} --data "text=我亲爱的主人，您要编译的${{ env.FIRMWARE_TAG }}-$(date +'%Y.%m.%d-%H%M')固件编译${STATUS}！更多信息请查看：[发布链接](https://github.com/oppen321/Lede-OpenWrt)" "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage"        
 
     - name: Check Space Usage
       if: (!cancelled())
