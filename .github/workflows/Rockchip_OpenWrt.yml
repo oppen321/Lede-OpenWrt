@@ -2,11 +2,11 @@ name: Rockchip_OpenWrt
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: 0 18 * * *
+#  schedule:
+#    - cron: 0 18 * * *
 
 env:
-  REPO_URL: https://github.com/coolsnowwolf/lede
+  REPO_URL: https://github.com/oppen321/lede
   REPO_BRANCH: master
   CONFIG_FILE: configs/rockchip.config
   EXTRA_CONFIG: configs/extra.config
@@ -136,8 +136,6 @@ jobs:
         echo "status=success" >> $GITHUB_OUTPUT
         echo "DATE=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
         echo "FILE_DATE=$(date +"%Y.%m.%d")" >> $GITHUB_ENV
-        
-    - name: Check Space Usage        
 
     - name: Check Space Usage
       if: (!cancelled())
