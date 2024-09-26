@@ -2,8 +2,8 @@ name: X86_64_OpenWrt
 
 on:
   workflow_dispatch:
-#  schedule:
-#    - cron: 0 19 * * *
+  schedule:
+    - cron: 0 19 * * *
 
 env:
   REPO_URL: https://github.com/oppen321/lede
