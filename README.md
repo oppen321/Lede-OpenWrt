@@ -17,21 +17,21 @@ Customized OpenWrt firmware, adapted to x86 and Rockchip platforms
 
 🐧 Welcome to the Lede-OpenWrt repository, which is designed to provide users with efficient and stable OpenWrt firmware, supporting a variety of devices.
 
-## 开源说明
+## Open source instructions
 
 Lede-OpenWrt is compiled based on [Lean's LEDE](https://github.com/coolsnowwolf/lede), and all codes and modifications are open source. Keep your data safe and the compilation process transparent.
 
-## 项目亮点
+## Project Highlights
 
-- **🌟 社区驱动**：欢迎开发者和用户交流 OpenWrt 经验与知识。
-- **🔒 完全开源**：坚守自由软件理念，支持私有应用部署。
-- **⚡ 高效性能**：优化固件以实现卓越的网络体验。
+- **🌟 community driven**：欢迎开发者和用户交流 OpenWrt 经验与知识。
+- **🔒 Completely open source**：坚守自由软件理念，支持私有应用部署。
+- **⚡ Efficient performance**：优化固件以实现卓越的网络体验。
 
 ***
 
-## 固件展示
-![示例图1](https://fastly.jsdelivr.net/gh/oppen321/Lede-OpenWrt/images/02.png)
-![示例图2](https://fastly.jsdelivr.net/gh/oppen321/Lede-OpenWrt/images/01.png)
+## Firmware display
+![Example diagram1](https://fastly.jsdelivr.net/gh/oppen321/Lede-OpenWrt/images/02.png)
+![Example diagram2](https://fastly.jsdelivr.net/gh/oppen321/Lede-OpenWrt/images/01.png)
 
 
 ## 定制固件
