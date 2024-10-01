@@ -5,7 +5,7 @@
 <div align="center">
   
 
-Customized OpenWrt firmware, adapted to x86 and Rockchip platforms
+Customized OpenWrt firmware, adapted to x86 and Rockchip platforms[简体中文](README_ZH.md) 
 
 [![](https://img.shields.io/badge/x86-Download%20X86_64-blue)](https://github.com/oppen321/Lede-OpenWrt/releases/tag/X86_64)
 [![](https://img.shields.io/badge/Rockchip-Download%20Rockchip-green)](https://github.com/oppen321/Lede-OpenWrt/releases/tag/Rockchip)
@@ -15,8 +15,7 @@ Customized OpenWrt firmware, adapted to x86 and Rockchip platforms
 
 ***
 
-🐧 Welcome to the Lede-OpenWrt repository, which is designed to provide users with efficient and stable OpenWrt firmware, supporting a variety of devices.[简体中文](README_ZH.md) 
-
+🐧 Welcome to the Lede-OpenWrt repository, which is designed to provide users with efficient and stable OpenWrt firmware, supporting a variety of devices.
 ## Open source instructions
 
 Lede-OpenWrt is compiled based on [Lean's LEDE](https://github.com/coolsnowwolf/lede), and all codes and modifications are open source. Keep your data safe and the compilation process transparent.
