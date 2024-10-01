@@ -45,5 +45,5 @@ Lede-OpenWrt 是基于 [Lean's LEDE](https://github.com/coolsnowwolf/lede) 编�
 
 特别感谢以下项目对本项目的支持：
 
-- ![LEDE Logo](https://example.com/lede-logo.png) [LEDE](https://github.com/coolsnowwolf)：提供稳定的源码支持。
+- ![LEDE Logo](https://avatars.githubusercontent.com/u/31687149) [LEDE](https://github.com/coolsnowwolf)：提供稳定的源码支持。
 - ![haibo Logo](https://example.com/haibo-logo.png) [haibo](https://github.com/haiibo)：提供有用的YAML编译模板。
