@@ -23,9 +23,9 @@ Lede-OpenWrt is compiled based on [Lean's LEDE](https://github.com/coolsnowwolf/
 
 ## Project Highlights
 
-- **🌟 community driven**：欢迎开发者和用户交流 OpenWrt 经验与知识。
-- **🔒 Completely open source**：坚守自由软件理念，支持私有应用部署。
-- **⚡ Efficient performance**：优化固件以实现卓越的网络体验。
+- **🌟 community driven**：Developers and users are welcome to exchange OpenWrt experience and knowledge.
+- **🔒 Completely open source**：Adhere to the concept of free software and support private application deployment.
+- **⚡ Efficient performance**：Optimize firmware for a superior network experience.
 
 ***
 
@@ -46,10 +46,10 @@ Lede-OpenWrt is compiled based on [Lean's LEDE](https://github.com/coolsnowwolf/
 
 Special thanks to the following projects for their support of this project:
 
-- [LEDE](https://github.com/coolsnowwolf)：提供稳定的源码支持。
-- [haibo](https://github.com/haiibo)：提供有用的YAML编译模板。
+- [LEDE](https://github.com/coolsnowwolf)：Provide stable source code support.
+- [haibo](https://github.com/haiibo)：Provides useful YAML compilation templates.
 
-### 贡献者
+### Contributor
 | [LEDE](https://github.com/coolsnowwolf) | [haibo](https://github.com/haiibo) |
 | :-------------: | :-------------: |
 | <img width="100" src="https://avatars.githubusercontent.com/u/31687149"/> | <img width="100" src="https://avatars.githubusercontent.com/u/85640068?v=4"/> |
