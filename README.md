@@ -38,13 +38,13 @@ Lede-OpenWrt is compiled based on [Lean's LEDE](https://github.com/coolsnowwolf/
 1. First log in to your Gihub account, then Fork this project to your own Github repository
 2. Modify the corresponding files in the `configs` directory to add or delete plug-ins, or upload your own `xx.config` configuration file
 3. For the corresponding name and function of the plug-in, please refer to Enshan netizen’s post.：[Applications add plugin app says](https://www.right.com.cn/forum/thread-3682029-1-1.html)
-4. 如需修改默认 IP、添加或删除插件包以及一些其他设置请在 `diy-script.sh` 文件内修改
-5. 添加或修改 `xx.yml` 文件，最后点击 `Actions` 运行要编译的 `workflow` 即可开始编译
-6. 编译大概需要3-5小时，编译完成后在仓库主页 [Releases](https://github.com/oppen321/Lede-OpenWrt/releases) 对应 Tag 标签内下载固件
+4. If you need to modify the default IP, add or delete plug-in packages and some other settings, please modify it in the `diy-script.sh` file
+5. Add or modify the `xx.yml` file, and finally click `Actions` to run the `workflow` to be compiled to start compilation
+6. Compilation takes about 3-5 hours. After the compilation is completed, download the firmware in the corresponding Tag tag on the warehouse homepage [Releases](https://github.com/oppen321/Lede-OpenWrt/releases)
 
-## 鸣谢
+## Acknowledgments
 
-特别感谢以下项目对本项目的支持：
+Special thanks to the following projects for their support of this project:
 
 - [LEDE](https://github.com/coolsnowwolf)：提供稳定的源码支持。
 - [haibo](https://github.com/haiibo)：提供有用的YAML编译模板。
