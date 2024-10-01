@@ -31,7 +31,7 @@ Lede-OpenWrt 是基于 [Lean's LEDE](https://github.com/coolsnowwolf/lede) 编�
 ## 固件展示
 ![示例图1](https://fastly.jsdelivr.net/gh/oppen321/Lede-OpenWrt/images/02.png)
 ![示例图2](https://fastly.jsdelivr.net/gh/oppen321/Lede-OpenWrt/images/01.png)
-***
+
 
 ## 定制固件
 1. 首先要登录 Gihub 账号，然后 Fork 此项目到你自己的 Github 仓库
