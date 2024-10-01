@@ -2,6 +2,8 @@
 <img src="https://cdn.jsdelivr.net/gh/oppen321/Lede-OpenWrt/images/OpenWrt.png">
 </p>
 
+<div align="center">
+  
 定制化 OpenWrt 固件，适配 x86 和 Rockchip 平台
 
 [![](https://img.shields.io/badge/blog-@LedeOpenWrt.svg)](https://www.example.com)
