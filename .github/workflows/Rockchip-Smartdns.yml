@@ -2,8 +2,8 @@ name: Rockchip_Smartdns
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: 0 18 * * *
+#  schedule:
+#    - cron: 0 18 * * *
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
