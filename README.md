@@ -28,8 +28,9 @@
 
 Lede-OpenWrt 是基于 [Lean's LEDE](https://github.com/coolsnowwolf/lede) 编译而成，所有代码和修改均开放源代码。确保您的数据安全，编译过程透明。
 
-![示例图](https://fastly.jsdelivr.net/gh/oppen321/Lede-OpenWrt/images/02.png)
-
+## 固件展示
+![示例图1](https://fastly.jsdelivr.net/gh/oppen321/Lede-OpenWrt/images/02.png)
+![示例图2](https://fastly.jsdelivr.net/gh/oppen321/Lede-OpenWrt/images/01.png)
 ***
 
 ## 
