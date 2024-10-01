@@ -45,6 +45,6 @@ Lede-OpenWrt 是基于 [Lean's LEDE](https://github.com/coolsnowwolf/lede) 编�
 
 | [LEDE](https://github.com/coolsnowwolf) | [haibo](https://github.com/haiibo) |
 | :-------------: | :-------------: |
-| <img width="100" src="https://avatars.githubusercontent.com/u/12345678"/> | <img width="100" src="https://avatars.githubusercontent.com/u/87654321"/> |
+| <img width="100" src="https://avatars.githubusercontent.com/u/31687149"/> | <img width="100" src="https://avatars.githubusercontent.com/u/85640068?v=4"/> |
 
 
