@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://raw.githubusercontent.com/oppen321/Lede-OpenWrt/refs/heads/main/images/argon.svg">
+<img src="https://cdn.jsdelivr.net/gh/oppen321/Lede-OpenWrt/images/openwrt.bjp">
 </p>
 
 <p align="center">
