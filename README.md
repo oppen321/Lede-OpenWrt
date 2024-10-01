@@ -34,5 +34,5 @@ Lede-OpenWrt 是基于 [Lean's LEDE](https://github.com/coolsnowwolf/lede) 编�
 ***
 
 ## Rockchip固件EMMC刷机教程
-- 安装驱动
+1. 安装驱动
 ![示例图3](https://fastly.jsdelivr.net/gh/oppen321/Lede-OpenWrt/images/03.png)
