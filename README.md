@@ -40,3 +40,10 @@ Lede-OpenWrt 是基于 [Lean's LEDE](https://github.com/coolsnowwolf/lede) 编�
 4. 如需修改默认 IP、添加或删除插件包以及一些其他设置请在 `diy-script.sh` 文件内修改
 5. 添加或修改 `xx.yml` 文件，最后点击 `Actions` 运行要编译的 `workflow` 即可开始编译
 6. 编译大概需要3-5小时，编译完成后在仓库主页 [Releases](https://github.com/oppen321/Lede-OpenWrt/releases) 对应 Tag 标签内下载固件
+
+## 鸣谢
+
+特别感谢以下项目对本项目的支持：
+
+- [LEDE](https://github.com/coolsnowwolf)：提供稳定的源码支持。
+- [haibo](https://github.com/haiibo)：提供有用的YAML编译模板。
