@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>群晖 NAS 安装 OpenWRT 软路由实现科学上网 - HY&#039;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><meta name="format-detection" content="telphone=no, date=no, address=no, email=no"><meta name="theme-color" content="#282a2c"><meta name="keywords" itemprop="keywords" content="NAS,Synology"><meta name="description" itemprop="description" content="本文是《NAS系统折腾记》系列文章中的第15篇，共15篇软路由（Software Router）是一种通过软件来实现路由功能的设备，它通常运行在通用的硬件平台上，比如个人电脑或者服务器。软路由的关键在于其软件，这类软件能够在标准的硬件上模拟传统硬件路由器的功能。使用软路由，用户可以通过安装特定的操作系统或软件，将普通的硬件设备转变为功能强大的网络路由器。 硬路由（Hardware Router），或称为硬件路由器，是专门为网络数据包的路由而设计的物理设备。它通常包括专用的处理器（如ASIC）、内存和网络接口，以及预 [&hellip;]"><meta itemprop="image" content="https://blog.yanghong.dev/wp-content/themes/kratos-4.3.0/assets/img/default.jpg"><meta property="og:site_name" content="HY&#039;s Blog"><meta property="og:url" content="https://blog.yanghong.dev/synology-nas-openwrt/"><meta property="og:title" content="群晖 NAS 安装 OpenWRT 软路由实现科学上网"><meta property="og:image" content="https://blog.yanghong.dev/wp-content/themes/kratos-4.3.0/assets/img/default.jpg"><meta property="og:image:type" content="image/webp"><meta property="og:locale" content="zh-CN"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="群晖 NAS 安装 OpenWRT 软路由实现科学上网"><meta name="twitter:creator" content="hy"><meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+
+	<!-- This site is optimized with the Yoast SEO plugin v21.9.1 - https://yoast.com/wordpress/plugins/seo/ -->
+	<meta name="description" content="软路由（Software Router）是一种通过软件来实现路由功能的设备，它通常运行在通用的硬件平台上，比如个人电脑或者服务器。软路由的关键在于其软件，这类软件能够在标准的硬件上模拟传统硬件路由器的功能。使用软路由，用户可以通过安装特定的操作系统或软件，将普通的硬件设备转变为功能强大的网络路由器。" />
+	<link rel="canonical" href="https://blog.yanghong.dev/synology-nas-openwrt/" />
+	<meta property="og:locale" content="zh_CN" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="群晖 NAS 安装 OpenWRT 软路由实现科学上网 - HY&#039;s Blog" />
+	<meta property="og:description" content="软路由（Software Router）是一种通过软件来实现路由功能的设备，它通常运行在通用的硬件平台上，比如个人电脑或者服务器。软路由的关键在于其软件，这类软件能够在标准的硬件上模拟传统硬件路由器的功能。使用软路由，用户可以通过安装特定的操作系统或软件，将普通的硬件设备转变为功能强大的网络路由器。" />
+	<meta property="og:url" content="https://blog.yanghong.dev/synology-nas-openwrt/" />
+	<meta property="og:site_name" content="HY&#039;s Blog" />
+	<meta property="article:published_time" content="2024-05-08T15:56:54+00:00" />
+	<meta property="article:modified_time" content="2024-06-10T04:30:01+00:00" />
+	<meta property="og:image" content="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/openwrt-logo-1024x640.jpg" />
+	<meta name="author" content="hy" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:label1" content="作者" />
+	<meta name="twitter:data1" content="hy" />
+	<meta name="twitter:label2" content="预计阅读时间" />
+	<meta name="twitter:data2" content="9 分" />
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"Article","@id":"https://blog.yanghong.dev/synology-nas-openwrt/#article","isPartOf":{"@id":"https://blog.yanghong.dev/synology-nas-openwrt/"},"author":{"name":"hy","@id":"https://blog.yanghong.dev/#/schema/person/6669d71aaf1bf0f64884c0d835ab0797"},"headline":"群晖 NAS 安装 OpenWRT 软路由实现科学上网","datePublished":"2024-05-08T15:56:54+00:00","dateModified":"2024-06-10T04:30:01+00:00","mainEntityOfPage":{"@id":"https://blog.yanghong.dev/synology-nas-openwrt/"},"wordCount":162,"commentCount":2,"publisher":{"@id":"https://blog.yanghong.dev/#/schema/person/6669d71aaf1bf0f64884c0d835ab0797"},"image":{"@id":"https://blog.yanghong.dev/synology-nas-openwrt/#primaryimage"},"thumbnailUrl":"https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/openwrt-logo-1024x640.jpg","keywords":["NAS","Synology"],"articleSection":["群晖NAS"],"inLanguage":"zh-CN","potentialAction":[{"@type":"CommentAction","name":"Comment","target":["https://blog.yanghong.dev/synology-nas-openwrt/#respond"]}]},{"@type":"WebPage","@id":"https://blog.yanghong.dev/synology-nas-openwrt/","url":"https://blog.yanghong.dev/synology-nas-openwrt/","name":"群晖 NAS 安装 OpenWRT 软路由实现科学上网 - HY&#039;s Blog","isPartOf":{"@id":"https://blog.yanghong.dev/#website"},"primaryImageOfPage":{"@id":"https://blog.yanghong.dev/synology-nas-openwrt/#primaryimage"},"image":{"@id":"https://blog.yanghong.dev/synology-nas-openwrt/#primaryimage"},"thumbnailUrl":"https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/openwrt-logo-1024x640.jpg","datePublished":"2024-05-08T15:56:54+00:00","dateModified":"2024-06-10T04:30:01+00:00","description":"软路由（Software Router）是一种通过软件来实现路由功能的设备，它通常运行在通用的硬件平台上，比如个人电脑或者服务器。软路由的关键在于其软件，这类软件能够在标准的硬件上模拟传统硬件路由器的功能。使用软路由，用户可以通过安装特定的操作系统或软件，将普通的硬件设备转变为功能强大的网络路由器。","breadcrumb":{"@id":"https://blog.yanghong.dev/synology-nas-openwrt/#breadcrumb"},"inLanguage":"zh-CN","potentialAction":[{"@type":"ReadAction","target":["https://blog.yanghong.dev/synology-nas-openwrt/"]}]},{"@type":"ImageObject","inLanguage":"zh-CN","@id":"https://blog.yanghong.dev/synology-nas-openwrt/#primaryimage","url":"https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/openwrt-logo-1024x640.jpg","contentUrl":"https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/openwrt-logo-1024x640.jpg"},{"@type":"BreadcrumbList","@id":"https://blog.yanghong.dev/synology-nas-openwrt/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://blog.yanghong.dev/"},{"@type":"ListItem","position":2,"name":"群晖 NAS 安装 OpenWRT 软路由实现科学上网"}]},{"@type":"WebSite","@id":"https://blog.yanghong.dev/#website","url":"https://blog.yanghong.dev/","name":"HY's Blog","description":"","publisher":{"@id":"https://blog.yanghong.dev/#/schema/person/6669d71aaf1bf0f64884c0d835ab0797"},"potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://blog.yanghong.dev/?s={search_term_string}"},"query-input":"required name=search_term_string"}],"inLanguage":"zh-CN"},{"@type":["Person","Organization"],"@id":"https://blog.yanghong.dev/#/schema/person/6669d71aaf1bf0f64884c0d835ab0797","name":"hy","image":{"@type":"ImageObject","inLanguage":"zh-CN","@id":"https://blog.yanghong.dev/#/schema/person/image/","url":"https://blog.yanghong.dev/wp-content/uploads/2023/11/IMG_7832-scaled.jpeg","contentUrl":"https://blog.yanghong.dev/wp-content/uploads/2023/11/IMG_7832-scaled.jpeg","width":1920,"height":2560,"caption":"hy"},"logo":{"@id":"https://blog.yanghong.dev/#/schema/person/image/"},"description":"一个分享技术心得和个人动态的blog 欢迎留言交流讨论。","sameAs":["https://blog.yanghong.dev"],"url":"https://blog.yanghong.dev/author/hyang/"}]}</script>
+	<!-- / Yoast SEO plugin. -->
+
+
+<link rel='dns-prefetch' href='//static.addtoany.com' />
+<link rel='dns-prefetch' href='//www.googletagmanager.com' />
+<link rel='dns-prefetch' href='//pagead2.googlesyndication.com' />
+		<style id="content-control-block-styles">
+			@media (max-width: 640px) {
+	.cc-hide-on-mobile {
+		display: none !important;
+	}
+}
+@media (min-width: 641px) and (max-width: 920px) {
+	.cc-hide-on-tablet {
+		display: none !important;
+	}
+}
+@media (min-width: 921px) and (max-width: 1440px) {
+	.cc-hide-on-desktop {
+		display: none !important;
+	}
+}		</style>
+		<link rel='stylesheet' id='wp-block-library-css' href='https://blog.yanghong.dev/wp-includes/css/dist/block-library/style.min.css?ver=6.5.2' type='text/css' media='all' />
+<link rel='stylesheet' id='content-control-block-styles-css' href='https://blog.yanghong.dev/wp-content/plugins/content-control/dist/style-block-editor.css?ver=2.2.5' type='text/css' media='all' />
+<style id='classic-theme-styles-inline-css' type='text/css'>
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+</style>
+<style id='global-styles-inline-css' type='text/css'>
+body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flow > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}body .is-layout-flow > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}body .is-layout-flow > .aligncenter{margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}body .is-layout-constrained > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}body .is-layout-constrained > .aligncenter{margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)){max-width: var(--wp--style--global--content-size);margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > .alignwide{max-width: var(--wp--style--global--wide-size);}body .is-layout-flex{display: flex;}body .is-layout-flex{flex-wrap: wrap;align-items: center;}body .is-layout-flex > *{margin: 0;}body .is-layout-grid{display: grid;}body .is-layout-grid > *{margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+.wp-block-navigation a:where(:not(.wp-element-button)){color: inherit;}
+:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
+.wp-block-pullquote{font-size: 1.5em;line-height: 1.6;}
+</style>
+<link rel='stylesheet' id='dashicons-css' href='https://blog.yanghong.dev/wp-includes/css/dashicons.min.css?ver=6.5.2' type='text/css' media='all' />
+<link rel='stylesheet' id='post-views-counter-frontend-css' href='https://blog.yanghong.dev/wp-content/plugins/post-views-counter/css/frontend.min.css?ver=1.4.3' type='text/css' media='all' />
+<link rel='stylesheet' id='light-style-css' href='https://blog.yanghong.dev/wp-content/plugins/organize-series/orgSeriesLightTheme.css?ver=6.5.2' type='text/css' media='all' />
+<link rel='stylesheet' id='xoo-el-style-css' href='https://blog.yanghong.dev/wp-content/plugins/easy-login-woocommerce/assets/css/xoo-el-style.css?ver=2.5' type='text/css' media='all' />
+<style id='xoo-el-style-inline-css' type='text/css'>
+
+	.xoo-el-form-container button.btn.button.xoo-el-action-btn{
+		background-color: #000000;
+		color: #ffffff;
+		font-weight: 600;
+		font-size: 15px;
+		height: 35px;
+	}
+
+.xoo-el-inmodal{
+	max-width: 800px;
+	max-height: 600px;
+}
+.xoo-el-sidebar{
+	background-image: url(https://blog.yanghong.dev/wp-content/uploads/2023/11/2021-12-31-16.55.22-1.jpg);
+	min-width: 40%;
+}
+.xoo-el-main, .xoo-el-main a , .xoo-el-main label{
+	color: #000000;
+}
+.xoo-el-srcont{
+	background-color: #ffffff;
+}
+.xoo-el-form-container ul.xoo-el-tabs li.xoo-el-active {
+	background-color: #000000;
+	color: #ffffff;
+}
+.xoo-el-form-container ul.xoo-el-tabs li{
+	background-color: #eeeeee;
+	color: #000000;
+}
+.xoo-el-main{
+	padding: 40px 30px;
+}
+
+.xoo-el-form-container button.xoo-el-action-btn:not(.button){
+    font-weight: 600;
+    font-size: 15px;
+}
+
+
+
+	.xoo-el-modal:before {
+	    content: '';
+	    display: inline-block;
+	    height: 100%;
+	    vertical-align: middle;
+	    margin-right: -0.25em;
+	}
+
+
+
+
+
+.xoo-el-popup-active .xoo-el-opac{
+    opacity: 0.7;
+    background-color: #000000;
+}
+</style>
+<link rel='stylesheet' id='xoo-el-fonts-css' href='https://blog.yanghong.dev/wp-content/plugins/easy-login-woocommerce/assets/css/xoo-el-fonts.css?ver=2.5' type='text/css' media='all' />
+<link rel='stylesheet' id='xoo-aff-style-css' href='https://blog.yanghong.dev/wp-content/plugins/easy-login-woocommerce/xoo-form-fields-fw/assets/css/xoo-aff-style.css?ver=1.1' type='text/css' media='all' />
+<style id='xoo-aff-style-inline-css' type='text/css'>
+
+.xoo-aff-input-group .xoo-aff-input-icon{
+	background-color:  #eee;
+	color:  #555;
+	max-width: 40px;
+	min-width: 40px;
+	border: 1px solid  #ccc;
+	border-right: 0;
+	font-size: 14px;
+}
+.xoo-aff-group{
+	margin-bottom: 30px;
+}
+
+.xoo-aff-group input[type="text"], .xoo-aff-group input[type="password"], .xoo-aff-group input[type="email"], .xoo-aff-group input[type="number"], .xoo-aff-group select, .xoo-aff-group select + .select2{
+	background-color: #fff;
+	color: #777;
+}
+
+.xoo-aff-group input[type="text"]::placeholder, .xoo-aff-group input[type="password"]::placeholder, .xoo-aff-group input[type="email"]::placeholder, .xoo-aff-group input[type="number"]::placeholder, .xoo-aff-group select::placeholder{
+	color: #777;
+	opacity: 0.7;
+}
+
+.xoo-aff-group input[type="text"]:focus, .xoo-aff-group input[type="password"]:focus, .xoo-aff-group input[type="email"]:focus, .xoo-aff-group input[type="number"]:focus, .xoo-aff-group select:focus, .xoo-aff-group select + .select2:focus{
+	background-color: #ededed;
+	color: #000;
+}
+
+
+
+	.xoo-aff-group input[type="text"], .xoo-aff-group input[type="password"], .xoo-aff-group input[type="email"], .xoo-aff-group input[type="number"], .xoo-aff-group select{
+		border-bottom-left-radius: 0;
+		border-top-left-radius: 0;
+	}
+
+
+</style>
+<link rel='stylesheet' id='xoo-aff-font-awesome5-css' href='https://blog.yanghong.dev/wp-content/plugins/easy-login-woocommerce/xoo-form-fields-fw/lib/fontawesome5/css/all.min.css?ver=6.5.2' type='text/css' media='all' />
+<link rel='stylesheet' id='select2-css' href='https://blog.yanghong.dev/wp-content/plugins/easy-login-woocommerce/xoo-form-fields-fw/lib/select2/select2.css?ver=6.5.2' type='text/css' media='all' />
+<link rel='stylesheet' id='bootstrap-css' href='https://blog.yanghong.dev/wp-content/themes/kratos-4.3.0/assets/css/bootstrap.min.css?ver=4.5.0' type='text/css' media='all' />
+<link rel='stylesheet' id='kicon-css' href='https://blog.yanghong.dev/wp-content/themes/kratos-4.3.0/assets/css/iconfont.min.css?ver=4.3.0' type='text/css' media='all' />
+<link rel='stylesheet' id='layer-css' href='https://blog.yanghong.dev/wp-content/themes/kratos-4.3.0/assets/css/layer.min.css?ver=3.1.1' type='text/css' media='all' />
+<link rel='stylesheet' id='lightgallery-css' href='https://blog.yanghong.dev/wp-content/themes/kratos-4.3.0/assets/css/lightgallery.min.css?ver=1.4.0' type='text/css' media='all' />
+<link rel='stylesheet' id='kratos-css' href='https://blog.yanghong.dev/wp-content/themes/kratos-4.3.0/style.css?ver=0.0.2' type='text/css' media='all' />
+<style id='kratos-inline-css' type='text/css'>
+
+        @media screen and (min-width: 992px) {
+            .k-nav .navbar-brand h1 {
+                color: #ffffff;
+            }
+            .k-nav .navbar-nav > li.nav-item > a {
+                color: #ffffff;
+            }
+        }
+        
+.sticky-sidebar {
+                position: sticky;
+                top: 8px;
+                height: 100%;
+            }
+</style>
+<link rel='stylesheet' id='hyblog-css' href='https://blog.yanghong.dev/wp-content/themes/kratos-4.3.0/assets/css/hyblog.css?ver=0.0.3' type='text/css' media='all' />
+<link rel='stylesheet' id='addtoany-css' href='https://blog.yanghong.dev/wp-content/plugins/add-to-any/addtoany.min.css?ver=1.16' type='text/css' media='all' />
+<link rel="alternate" type="application/json+oembed" href="https://blog.yanghong.dev/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fblog.yanghong.dev%2Fsynology-nas-openwrt%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://blog.yanghong.dev/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fblog.yanghong.dev%2Fsynology-nas-openwrt%2F&#038;format=xml" />
+<meta name="generator" content="Site Kit by Google 1.119.0" /><style>
+	/* 确保body和html标签填满整个视口 */
+	html, body {
+		height: 100%;
+		margin: 0;
+	}
+	/* 为iframe设置样式，使其自适应父容器的大小 */
+	.responsive-iframe {
+		width: 100%;
+		height: 100%;
+		border: none;
+	}
+	/* 设置一个容器，这里也可以设置具体的宽度和高度或使用百分比 */
+	/*
+	.iframe-container {
+		width: 100%; 
+		height: 700px; 
+		border: 1px solid #ccc;
+		
+	}
+	*/
+	/* 设置一个容器，这里也可以设置具体的宽度和高度或使用百分比 */
+	.iframe-container {
+		width: 100%; /* 或者任何指定的宽度 */
+		height: 700px; /* 或者任何指定的高度 */
+		border: 1px solid #ccc;
+		padding: 20px; /* 添加padding效果 */
+		box-sizing: border-box; /* 确保padding不会影响到容器的实际大小 */
+	}
+
+/* 如果你在这个容器内部使用iframe，你可能需要调整iframe的宽高来确保它填充整个容器，考虑到了padding和border */
+	.iframe-container iframe {
+		width: calc(100% - 40px); /* 减去左右的padding */
+		height: calc(100% - 40px); /* 减去上下的padding */
+		display: block; /* 避免内联元素的默认边距 */
+	}
+
+		
+	.ad-text-area {
+		background-color: #0097ee; /* 设置背景色为浅蓝色 */
+		padding: 10px; /* 添加一些填充以增加可读性 */
+	}
+		
+	.neon {
+		color: #cce7f8;
+		font-size: 24px;
+		-webkit-animation: shining 0.5s alternate infinite;
+		animation: shining 0.5s alternate infinite;
+	}
+	@-webkit-keyframes shining {
+		/*
+		from {
+			text-shadow: 0 0 4px lightblue, 0 0 8px lightblue, 0 0 12px lightblue, 0 0 16px skyblue, 0 0 20px skyblue, 0 0 24px skyblue;
+		}
+
+		to {
+			text-shadow: 0 0 2px lightblue, 0 0 4px lightblue, 0 0 6px lightblue, 0 0 8px skyblue, 0 0 10px skyblue, 0 0 12px skyblue;
+		}
+		*/
+
+		from {
+			text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+		}
+		to {
+			text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+		}
+
+	}
+	@-webkit-keyframes shining {
+		/*
+		from {
+			text-shadow: 0 0 4px lightblue, 0 0 8px lightblue, 0 0 12px lightblue, 0 0 16px skyblue, 0 0 20px skyblue, 0 0 24px skyblue;
+		}
+
+		to {
+			text-shadow: 0 0 2px lightblue, 0 0 4px lightblue, 0 0 6px lightblue, 0 0 8px skyblue, 0 0 10px skyblue, 0 0 12px skyblue;
+		}
+		*/
+
+		from {
+			text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+		}
+		to {
+			text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+		}
+
+	}
+
+
+	.glow {
+		font-size: 80px;
+		color: #fff;
+		text-align: center;
+		-webkit-animation: glow 1s ease-in-out infinite alternate;
+		-moz-animation: glow 1s ease-in-out infinite alternate;
+		animation: glow 1s ease-in-out infinite alternate;
+	}
+
+	@-webkit-keyframes glow {
+		from {
+			text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+		}
+		to {
+			text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+		}
+	}
+
+	@keyframes blink {
+		0% { border-color: red; }
+		50% { border-color: transparent; }
+		100% { border-color: red; }
+	}
+
+	img.blinking-border {
+		border: 4px solid red;
+		animation: blink 1s infinite;
+	}
+	
+	
+</style>
+
+<meta name="google-site-verification" content="09z6my6olbrRhSDdVST2iYhZ6IQR_cuFb-ewbgdas6Q" />
+<meta name="msvalidate.01" content="D3C401FA31A1E68764B05E7D7880E465" />
+<!-- Google AdSense meta tags added by Site Kit -->
+<meta name="google-adsense-platform-account" content="ca-host-pub-2644536267352236">
+<meta name="google-adsense-platform-domain" content="sitekit.withgoogle.com">
+<!-- End Google AdSense meta tags added by Site Kit -->
+<meta name="redi-version" content="1.2.2" />
+<!-- Site Kit 添加的 Google AdSense 代码段 -->
+<script type="text/javascript" async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2919678056942704&amp;host=ca-host-pub-2644536267352236" crossorigin="anonymous"></script>
+
+<!-- 结束 Site Kit 添加的 Google AdSense 代码段 -->
+<link rel="icon" href="https://blog.yanghong.dev/wp-content/uploads/2023/11/cropped-logo-1-32x32.png" sizes="32x32" />
+<link rel="icon" href="https://blog.yanghong.dev/wp-content/uploads/2023/11/cropped-logo-1-192x192.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://blog.yanghong.dev/wp-content/uploads/2023/11/cropped-logo-1-180x180.png" />
+<meta name="msapplication-TileImage" content="https://blog.yanghong.dev/wp-content/uploads/2023/11/cropped-logo-1-270x270.png" />
+		<style type="text/css" id="wp-custom-css">
+			.reply-to-read {  
+overflow: hidden;  
+margin: 10px 0;  
+padding: 8px 8px 8px 24px;  
+border: 1px dashed hsl(0, 100%, 80%);  
+background: hsl(0, 100%, 100%) url(http://image.gfan.com/static/image/gfan/locked.gif) no-repeat 6px 50%;  
+font-size: 12px;  
+zoom: 1;  
+}  		</style>
+		<script type="text/javascript" src="https://blog.yanghong.dev/wp-includes/js/jquery/jquery.min.js?ver=3.7.1" id="jquery-core-js"></script>
+<script type="text/javascript" src="https://blog.yanghong.dev/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1" id="jquery-migrate-js"></script>
+<script></script></head>
+
+<body>
+    <div class="k-header">
+        <nav class="k-nav navbar navbar-expand-lg navbar-light fixed-top" style="background:#286ffc">
+            <div class="container">
+                <a class="navbar-brand" href="https://blog.yanghong.dev">
+                    <h1>HY&#039;s Blog</h1>                </a>
+                                    <button class="navbar-toggler navbar-toggler-right" id="navbutton" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="line first-line"></span>
+                        <span class="line second-line"></span>
+                        <span class="line third-line"></span>
+                    </button>
+                <div id="navbarResponsive" class="collapse navbar-collapse"><ul id="menu-%e5%af%bc%e8%88%aa%e6%9d%a1" class="navbar-nav ml-auto" itemscope itemtype="http://www.schema.org/SiteNavigationElement"><li ><a itemprop="url" href="https://blog.yanghong.dev" class="nav-link"><span itemprop="name">首 页</span></a></li>
+<li ><a href="#" data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle nav-link" id="menu-item-dropdown-71"><span itemprop="name">ROS &amp; AI</span></a>
+<ul class="dropdown-menu" aria-labelledby="menu-item-dropdown-71">
+	<li ><a itemprop="url" href="https://blog.yanghong.dev/category/ros-ai/ros/" class="dropdown-item"><span itemprop="name">ROS与机器人</span></a></li>
+	<li ><a itemprop="url" href="https://blog.yanghong.dev/category/ros-ai/llm/" class="dropdown-item"><span itemprop="name">Large Language Model</span></a></li>
+	<li ><a itemprop="url" href="https://blog.yanghong.dev/category/ros-ai/openvino/" class="dropdown-item"><span itemprop="name">Intel OpenVINO</span></a></li>
+	<li ><a itemprop="url" href="https://blog.yanghong.dev/category/ros-ai/sd/" class="dropdown-item"><span itemprop="name">Stable Diffusion</span></a></li>
+</ul>
+</li>
+<li ><a href="#" data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle nav-link" id="menu-item-dropdown-74"><span itemprop="name">技术点滴</span></a>
+<ul class="dropdown-menu" aria-labelledby="menu-item-dropdown-74">
+	<li ><a itemprop="url" href="https://blog.yanghong.dev/category/tech/synology-nas/" class="dropdown-item"><span itemprop="name">群晖NAS</span></a></li>
+	<li ><a itemprop="url" href="https://blog.yanghong.dev/category/tech/docker/" class="dropdown-item"><span itemprop="name">Docker</span></a></li>
+	<li ><a itemprop="url" href="https://blog.yanghong.dev/category/tech/wp/" class="dropdown-item"><span itemprop="name">WordPress</span></a></li>
+</ul>
+</li>
+<li ><a itemprop="url" href="https://blog.yanghong.dev/category/blog/" class="nav-link"><span itemprop="name">个人Blog</span></a></li>
+<li ><a itemprop="url" href="https://blog.yanghong.dev/aboutme/" class="nav-link"><span itemprop="name">关于我</span></a></li>
+<li ><a itemprop="url" href="#login" class="nav-link"><span itemprop="name">登录</span></a></li>
+</ul></div>            </div>
+        </nav>
+            </div><div class="k-main color" style="background:#f5f5f5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 details">
+                                    <div class="article">
+                                                    <div class="breadcrumb-box">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item">
+                                        <a class="text-dark" href="https://blog.yanghong.dev"> 首页</a>
+                                    </li>
+                                    <li class="breadcrumb-item"> <a class="text-dark" href="https://blog.yanghong.dev/category/tech/">技术点滴</a></li><li class="breadcrumb-item"> <a class="text-dark" href="https://blog.yanghong.dev/category/tech/synology-nas/">群晖NAS</a></li>                                    <li class="breadcrumb-item active" aria-current="page"> 正文</li>
+                                </ol>
+                            </div>
+                                                <div class="header">
+                            <h1 class="title">群晖 NAS 安装 OpenWRT 软路由实现科学上网</h1>
+                            <div class="meta">
+                                <span>2024年5月8日</span>
+                                                                    <span>4019点热度</span>
+                                                                    <span>4人点赞</span>
+                                                                    <span>2条评论</span>
+                                                                                            </div>
+                        </div>
+                        <div class="content" id="lightgallery">
+                            <div class="addtoany_share_save_container addtoany_content addtoany_content_top"><div class="a2a_kit a2a_kit_size_32 addtoany_list" data-a2a-url="https://blog.yanghong.dev/synology-nas-openwrt/" data-a2a-title="群晖 NAS 安装 OpenWRT 软路由实现科学上网"><a class="a2a_button_wechat" href="https://www.addtoany.com/add_to/wechat?linkurl=https%3A%2F%2Fblog.yanghong.dev%2Fsynology-nas-openwrt%2F&amp;linkname=%E7%BE%A4%E6%99%96%20NAS%20%E5%AE%89%E8%A3%85%20OpenWRT%20%E8%BD%AF%E8%B7%AF%E7%94%B1%E5%AE%9E%E7%8E%B0%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91" title="WeChat" rel="nofollow noopener" target="_blank"></a><a class="a2a_button_sina_weibo" href="https://www.addtoany.com/add_to/sina_weibo?linkurl=https%3A%2F%2Fblog.yanghong.dev%2Fsynology-nas-openwrt%2F&amp;linkname=%E7%BE%A4%E6%99%96%20NAS%20%E5%AE%89%E8%A3%85%20OpenWRT%20%E8%BD%AF%E8%B7%AF%E7%94%B1%E5%AE%9E%E7%8E%B0%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91" title="Sina Weibo" rel="nofollow noopener" target="_blank"></a><a class="a2a_button_facebook" href="https://www.addtoany.com/add_to/facebook?linkurl=https%3A%2F%2Fblog.yanghong.dev%2Fsynology-nas-openwrt%2F&amp;linkname=%E7%BE%A4%E6%99%96%20NAS%20%E5%AE%89%E8%A3%85%20OpenWRT%20%E8%BD%AF%E8%B7%AF%E7%94%B1%E5%AE%9E%E7%8E%B0%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91" title="Facebook" rel="nofollow noopener" target="_blank"></a><a class="a2a_button_twitter" href="https://www.addtoany.com/add_to/twitter?linkurl=https%3A%2F%2Fblog.yanghong.dev%2Fsynology-nas-openwrt%2F&amp;linkname=%E7%BE%A4%E6%99%96%20NAS%20%E5%AE%89%E8%A3%85%20OpenWRT%20%E8%BD%AF%E8%B7%AF%E7%94%B1%E5%AE%9E%E7%8E%B0%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91" title="Twitter" rel="nofollow noopener" target="_blank"></a><a class="a2a_button_linkedin" href="https://www.addtoany.com/add_to/linkedin?linkurl=https%3A%2F%2Fblog.yanghong.dev%2Fsynology-nas-openwrt%2F&amp;linkname=%E7%BE%A4%E6%99%96%20NAS%20%E5%AE%89%E8%A3%85%20OpenWRT%20%E8%BD%AF%E8%B7%AF%E7%94%B1%E5%AE%9E%E7%8E%B0%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91" title="LinkedIn" rel="nofollow noopener" target="_blank"></a><a class="a2a_button_blogger" href="https://www.addtoany.com/add_to/blogger?linkurl=https%3A%2F%2Fblog.yanghong.dev%2Fsynology-nas-openwrt%2F&amp;linkname=%E7%BE%A4%E6%99%96%20NAS%20%E5%AE%89%E8%A3%85%20OpenWRT%20%E8%BD%AF%E8%B7%AF%E7%94%B1%E5%AE%9E%E7%8E%B0%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91" title="Blogger" rel="nofollow noopener" target="_blank"></a><a class="a2a_button_reddit" href="https://www.addtoany.com/add_to/reddit?linkurl=https%3A%2F%2Fblog.yanghong.dev%2Fsynology-nas-openwrt%2F&amp;linkname=%E7%BE%A4%E6%99%96%20NAS%20%E5%AE%89%E8%A3%85%20OpenWRT%20%E8%BD%AF%E8%B7%AF%E7%94%B1%E5%AE%9E%E7%8E%B0%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91" title="Reddit" rel="nofollow noopener" target="_blank"></a><a class="a2a_button_wordpress" href="https://www.addtoany.com/add_to/wordpress?linkurl=https%3A%2F%2Fblog.yanghong.dev%2Fsynology-nas-openwrt%2F&amp;linkname=%E7%BE%A4%E6%99%96%20NAS%20%E5%AE%89%E8%A3%85%20OpenWRT%20%E8%BD%AF%E8%B7%AF%E7%94%B1%E5%AE%9E%E7%8E%B0%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91" title="WordPress" rel="nofollow noopener" target="_blank"></a><a class="a2a_button_email" href="https://www.addtoany.com/add_to/email?linkurl=https%3A%2F%2Fblog.yanghong.dev%2Fsynology-nas-openwrt%2F&amp;linkname=%E7%BE%A4%E6%99%96%20NAS%20%E5%AE%89%E8%A3%85%20OpenWRT%20%E8%BD%AF%E8%B7%AF%E7%94%B1%E5%AE%9E%E7%8E%B0%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91" title="Email" rel="nofollow noopener" target="_blank"></a><a class="a2a_dd a2a_counter addtoany_share_save addtoany_share" href="https://www.addtoany.com/share"></a></div></div><div class="seriesmeta">本文是《<a href="https://blog.yanghong.dev/series/nas-diy/" class="series-92" title="NAS系统折腾记">NAS系统折腾记</a>》系列文章中的第15篇，共15篇</div>
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/openwrt-logo-1024x640.jpg" alt="" class="wp-image-1704"/></figure>
+
+
+
+<p>软路由（Software Router）是一种通过软件来实现路由功能的设备，它通常运行在通用的硬件平台上，比如个人电脑或者服务器。软路由的关键在于其软件，这类软件能够在标准的硬件上模拟传统硬件路由器的功能。使用软路由，用户可以通过安装特定的操作系统或软件，将普通的硬件设备转变为功能强大的网络路由器。</p>
+
+
+
+<p>硬路由（Hardware Router），或称为硬件路由器，是专门为网络数据包的路由而设计的物理设备。它通常包括专用的处理器（如ASIC）、内存和网络接口，以及预装的路由管理软件。硬路由器专为处理网络流量而优化，能够提供高效稳定的网络服务。</p>
+
+
+
+<p>软路由与硬路由的主要差异包括：</p>
+
+
+
+<ol>
+<li><strong>性能和稳定性</strong>：
+<ul>
+<li><strong>硬路由</strong>：由于是专为网络路由设计的，因此在网络数据处理、稳定性和可靠性方面通常比软路由表现更好。</li>
+
+
+
+<li><strong>软路由</strong>：虽然在功能上可以与硬路由相媲美，但性能和稳定性可能受到运行软路由的硬件平台的限制。</li>
+</ul>
+</li>
+
+
+
+<li><strong>灵活性和扩展性</strong>：
+<ul>
+<li><strong>硬路由</strong>：功能和性能在制造时已基本固定，后续扩展和升级可能有限。</li>
+
+
+
+<li><strong>软路由</strong>：由于是基于软件的，可以通过升级软件或改善硬件配置来增强功能和处理能力，灵活性较高。</li>
+</ul>
+</li>
+
+
+
+<li><strong>成本</strong>：
+<ul>
+<li><strong>硬路由</strong>：通常价格较高，尤其是企业级的产品。</li>
+
+
+
+<li><strong>软路由</strong>：可以使用现有的或低成本硬件，自行安装和配置软件，初期投资相对较低。</li>
+</ul>
+</li>
+
+
+
+<li><strong>部署和管理</strong>：
+<ul>
+<li><strong>硬路由</strong>：通常比较即插即用，少量配置后即可运行。</li>
+
+
+
+<li><strong>软路由</strong>：需要用户具备一定的技术知识来安装操作系统和配置网络。</li>
+</ul>
+</li>
+
+
+
+<li><strong>适用场景</strong>：
+<ul>
+<li><strong>硬路由</strong>：适合对网络性能、稳定性有较高需求的环境，如大型企业、数据中心。</li>
+
+
+
+<li><strong>软路由</strong>：适合技术爱好者、小型企业或实验性项目，也适用于需要高度定制化的场景。</li>
+</ul>
+</li>
+</ol>
+
+
+
+<p>总体来说，选择软路由还是硬路由取决于用户的具体需求、预算以及对性能的期待。软路由提供了更多的灵活性和成本效益，而硬路由则提供了更高的性能和可靠性。</p>
+
+
+
+<h2  class="wp-block-heading"><a name="toc-1"></a>软路由方案的选择</h2>
+
+
+
+<p>软路由的选择方案主要依赖于你希望实现的功能、预算、以及对性能的需求。下面介绍一些常见的软路由解决方案，以及相应的操作系统和软件：</p>
+
+
+
+<h3  class="wp-block-heading"><a name="toc-2"></a>1. 开源软路由系统</h3>
+
+
+
+<p><strong>pfSense</strong></p>
+
+
+
+<ul>
+<li><strong>特点</strong>：基于 FreeBSD，功能全面，包括防火墙、VPN、负载均衡等。</li>
+
+
+
+<li><strong>适用场景</strong>：适合中小企业和技术爱好者，可运行在旧电脑或专门的小型服务器上。</li>
+</ul>
+
+
+
+<p><strong>OPNsense</strong></p>
+
+
+
+<ul>
+<li><strong>特点</strong>：也是基于 FreeBSD，与 pfSense 类似，但界面更现代，注重安全性和透明性。</li>
+
+
+
+<li><strong>适用场景</strong>：同样适合中小企业和技术爱好者，强调易用性和安全更新。</li>
+</ul>
+
+
+
+<p><strong>OpenWRT</strong></p>
+
+
+
+<ul>
+<li><strong>特点</strong>：适用于各种型号的路由器和嵌入式设备，非常轻量级。</li>
+
+
+
+<li><strong>适用场景</strong>：非常适合在家庭环境或小型办公室中使用，特别是对旧路由器的复用。</li>
+</ul>
+
+
+
+<p><strong>VyOS</strong></p>
+
+
+
+<ul>
+<li><strong>特点</strong>：基于 Debian，是一个网络操作系统，包括路由、防火墙和VPN功能。</li>
+
+
+
+<li><strong>适用场景</strong>：适合较为复杂的网络环境，需要较高定制性和稳定性。</li>
+</ul>
+
+
+
+<h3  class="wp-block-heading"><a name="toc-3"></a>2. 商业软路由解决方案</h3>
+
+
+
+<p><strong>Cisco IOS XE</strong></p>
+
+
+
+<ul>
+<li><strong>特点</strong>：Cisco 的一种高级路由操作系统，提供丰富的网络功能。</li>
+
+
+
+<li><strong>适用场景</strong>：适合大型企业和复杂的网络需求，需要高度可靠的网络设备。</li>
+</ul>
+
+
+
+<p><strong>Juniper vSRX</strong></p>
+
+
+
+<ul>
+<li><strong>特点</strong>：Juniper 网络的虚拟防火墙产品，提供高性能网络安全服务。</li>
+
+
+
+<li><strong>适用场景</strong>：适合需要严格安全控制的企业网络环境。</li>
+</ul>
+
+
+
+<h3  class="wp-block-heading"><a name="toc-4"></a>3. 自定义软路由解决方案</h3>
+
+
+
+<p><strong>基于 Linux 的自定义系统</strong></p>
+
+
+
+<ul>
+<li><strong>特点</strong>：可以使用 Linux 系统（如 Ubuntu, CentOS）配合 iptables、Quagga、BIRD 等软件自行搭建软路由。</li>
+
+
+
+<li><strong>适用场景</strong>：适合高度技术化的用户或组织，需要定制特定功能或实验性网络项目。</li>
+</ul>
+
+
+
+<p>本文选取 OpenWRT 开源软件作为软路由方案，详细介绍如何在群晖 NAS 上搭建自己的软路由方案实现科学上网。</p>
+
+
+
+<h2  class="wp-block-heading"><a name="toc-5"></a>安装 OpenWRT</h2>
+
+
+
+<p>OpenWRT是免费开源的软路由系统，原生的OpenWRT基本都是源码，想要直接使用还需要自己会编译，过程相对较复杂，需要一定的 Linux 系统和编程的专业知识。在这里我们直接使用一些靠谱的大佬编译好的我们可以直接使用的openWRT软路由系统。目前各式各样的OpenWRT软路由系统固件也有很多，最终我只选定了一位大佬（eSir）编译的openWRT系统固件，我用过很长时间了，固件稳定，并且更新还很迅速。国内也有很多其它的版本，但是安全性未知，目前不太建议。</p>
+
+
+
+<h3  class="wp-block-heading"><a name="toc-6"></a>1. 下载 OpenWRT</h3>
+
+
+
+<p>eSir 版本的OpenWRT 可以从 <a href="https://drive.google.com/drive/folders/1uRXg_krKHPrQneI3F2GNcSVRoCgkqESr" target="_blank" rel="noreferrer noopener" rel="nofollow" >Google Drive</a> 下载。</p>
+
+
+
+<p>eSir 的openWRT是基于 Lean 大神的源码编译的，共分为四个版本：</p>
+
+
+
+<ul>
+<li><strong>佛跳墙版本：</strong>集成插件最少的一个版本，适合单网口的旁路由设备，只是做一些简单上网加密解密的业务</li>
+
+
+
+<li><strong>高大全版本：</strong>集成插件最多的一个版本，适合不太会自己装插件的朋友，需要使用直接菜单中启用即可，比较方便</li>
+
+
+
+<li><strong>精品小包版本：</strong>集成插件适中的一个版本，常用插件都有，后续可能还需要自己折腾</li>
+
+
+
+<li><strong>服务器版：</strong>顾名思义，服务器用户使用的，我们家庭用户一般用不到</li>
+</ul>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-71-1024x333.png" alt="" class="wp-image-1663"/></figure>
+
+
+
+<p>以上几个版本怎么选择需要根据自己的需求，我个人是直接选择高大全版本，毕竟再到openWRT上安装腾插件又是一件费时又费力的工作，懒得折腾了。直接选择最新的 V1 [2024] 版本。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-72.png" alt="" class="wp-image-1664"/></figure>
+
+
+
+<p>这个目录下面有两个 .gz 文件，分别是 openwrt-gdq-v1[2024]-x86-64-generic-squashfs-uefi.img.gz （UEFI BIOS版本）和 openwrt-gdq-v1[2024]-x86-64-generic-squashfs-legacy.img.gz （Legacy BIOS 版本），按照自己的实际需求下载。如果搞不清楚就直接下载 legacy BIOS 版本。</p>
+
+
+
+<p>为了方便安装 OpenWRT 前无法访问 Google Drive 的同学，我把这两个文件搬运到这里共享：<a href="https://nas.yanghong.dev:8203/Tools/OpenWRT/" target="_blank"  rel="nofollow" >点此下载</a>。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-73-1024x517.png" alt="" class="wp-image-1665"/></figure>
+
+
+
+<p>下载 .gz 文件后解压缩，得到一个 .img 文件。这个文件就是我们要使用到的 OpenWRT 镜像。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-74.png" alt="" class="wp-image-1666"/></figure>
+
+
+
+<h3  class="wp-block-heading"><a name="toc-7"></a>2. 安装 OpenWRT</h3>
+
+
+
+<p>首先需要安装群晖虚拟机套件。群晖的虚拟机套件是名称叫做Virtual Machine Manager (简称VMM) ，直接在群晖的套件中心即可下载。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-75.png" alt="" class="wp-image-1667"/></figure>
+
+
+
+<p>下载安装好VMM之后打开它，选择“映像–硬盘映像–新增–从计算机”。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-76-1024x614.png" alt="" class="wp-image-1668"/></figure>
+
+
+
+<p>然后选中我们上面下载到电脑上的openWRT固件文件。然后这里会提示名称无效，因为它的文件名里有中括号[]，改一下文件名删除其中的中括号即可。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-77-1024x650.png" alt="" class="wp-image-1669"/></figure>
+
+
+
+<p>点击“下一步”。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-79-1024x636.png" alt="" class="wp-image-1671"/></figure>
+
+
+
+<p>点击”完成“。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-80-1024x636.png" alt="" class="wp-image-1672"/></figure>
+
+
+
+<p>硬盘映像成功创建后状态会显示“良好”。“openwrt-gdq-v1[2024]-x86-64-generic-squashfs-legacy”就是我们刚才创建的硬盘映像。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-81-1024x465.png" alt="" class="wp-image-1673"/></figure>
+
+
+
+<p>选择“虚拟机–新增–导入”。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-82-1024x503.png" alt="" class="wp-image-1674"/></figure>
+
+
+
+<p>选择“从磁盘映像导入”，然后“下一步”。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-84-1024x573.png" alt="" class="wp-image-1676"/></figure>
+
+
+
+<p>选择一个存储空间，然后点击“下一步”。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-85-1024x559.png" alt="" class="wp-image-1677"/></figure>
+
+
+
+<p>输入虚拟机名称，设置CPU和内存容量，其它保持缺省，点击“下一步”。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-86-1024x562.png" alt="" class="wp-image-1678"/></figure>
+
+
+
+<p>选择“openwrt-gdq-v1[2024]-x86-64-generic-squashfs-legacy”（选好后容量会自动设置），点击“下一步”。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-87-1024x556.png" alt="" class="wp-image-1679"/></figure>
+
+
+
+<p>在配置网络页面点击小齿轮进入网络配置。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-88-1024x576.png" alt="" class="wp-image-1680"/></figure>
+
+
+
+<p>网卡型号选择“e1000”，点击“确定”。这步的作用主要是确定我们虚拟的软路由的工作模式是“全双工”或者“半双工”，全双工的优势明显，默认的是半双工，所以我们这里需要更改一下即可。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-89-1024x552.png" alt="" class="wp-image-1681"/></figure>
+
+
+
+<p>其它设置这里设置自动启动为“是”，其它保持缺省，点击“下一步”。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-90-1024x566.png" alt="" class="wp-image-1682"/></figure>
+
+
+
+<p>然后分配权限，选择自己的群晖NAS管理员账户即可，不知道的直接全选吧！然后点击“下一步”。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-91-1024x553.png" alt="" class="wp-image-1683"/></figure>
+
+
+
+<p>点击“完成”创建虚拟机。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-92-1024x575.png" alt="" class="wp-image-1684"/></figure>
+
+
+
+<h2  class="wp-block-heading"><a name="toc-8"></a>配置 OpenWRT</h2>
+
+
+
+<p>选中刚才创建的虚拟机，然后点击“开机”。（我这里已经开机了，所以“开机”菜单是灰色的）</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-93-1024x472.png" alt="" class="wp-image-1686"/></figure>
+
+
+
+<p>点击“连接”按钮。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-94-1024x457.png" alt="" class="wp-image-1687"/></figure>
+
+
+
+<p>出现如下的界面的时候，按电脑的“回车”键进入OpenWRT shell。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-95-1024x471.png" alt="" class="wp-image-1688"/></figure>
+
+
+
+<p>先运行 passwd 命令更改 root 用户的密码。</p>
+
+
+
+<pre class="wp-block-code"><code>passwd</code></pre>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-96-1024x462.png" alt="" class="wp-image-1689"/></figure>
+
+
+
+<p>然后输入如下的命令行进行网络配置：</p>
+
+
+
+<pre class="wp-block-code"><code>vi /etc/config/network</code></pre>
+
+
+
+<p>将 “lan” 里面的 ipaddr，gateway 和 dns 更改为自己的配置。不会使用 vi 的同学可以自行百度一下。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-97-1024x669.png" alt="" class="wp-image-1690"/></figure>
+
+
+
+<p>修改完成后保存并退出 vi，然后输入 reboot 命令重新启动 OpenWRT。</p>
+
+
+
+<pre class="wp-block-code"><code>reboot</code></pre>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-98-1024x520.png" alt="" class="wp-image-1691"/></figure>
+
+
+
+<p>打开浏览器，访问 http://openwrt_ip。openwrt_ip 是刚才在 /etc/config/network 文件里设置的 ipaddr。出现如下的登录界面：</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-99-1024x544.png" alt="" class="wp-image-1692"/></figure>
+
+
+
+<p>输入用户名 root，密码则是刚才 passwd 命令更改的密码，然后点击“登录”，就进入 OpenWRT 的主界面。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-100-1024x468.png" alt="" class="wp-image-1693"/></figure>
+
+
+
+<p>首先确认网络接口显示“全双工”，说明前面的设置都正确了。接下来继续配置 OpenWRT。</p>
+
+
+
+<p>软路由安装好之后并不能直接使用，还得进行一些必要设置。因为我这台黑群晖有四个网口，所以它在软路由的功能上有两种选择：主路由或者旁路由。</p>
+
+
+
+<p>当作主路由使用我们可以直接用它连接光猫拨号上网（前提是光猫桥接模式），家里的无线路由器充当AP发射WIFI无线信号即可。当作旁路由还是路由器拨号上网，然后我们上网终端的网关指定到我们配置好的软路由中即可。</p>
+
+
+
+<p>我个人是不建议将NAS中虚拟机中的软路由当作主路由使用，因为NAS只要出现问题，家里的网也跟着出现问题，非常的麻烦！并且我自己用的路由器已经是很不错了，所以我建议这里将它设置为旁路由，当作主路由的BUFF加成就可以达到我们的需求了。</p>
+
+
+
+<p>不过旁路由又有两种选择，这两种选择的区别在于DHCP的分配权，并且二者只能取一，否则又会出现网络问题~~</p>
+
+
+
+<ul>
+<li>1，路由器分配DHCP：需要使用软路由功能的设备终端需要手动指定到软路由</li>
+
+
+
+<li>2，软路由分配DHCP：开启之后默认所有联网设备都直接使用软路由的功能</li>
+</ul>
+
+
+
+<p>我偏向于第一种选择，因为我们关闭软路由的DHCP之后，我们可以直接在路由器上设置所有联网设备指向软路由，也可以设置只有需要软路由功能的设备指向软路由，不需要软路由功能的可以直连路由器，这样的好处是更灵活，利于管理网络。</p>
+
+
+
+<p>打开我们创建好的OpenWrt 软路由管理后台，找到“网络–接口–LAN”后面的“修改”按钮。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-101-1024x478.png" alt="" class="wp-image-1694"/></figure>
+
+
+
+<p>在“基本设置”里，需要更改的设置如下：</p>
+
+
+
+<ul>
+<li>协议：静态地址</li>
+
+
+
+<li>IPv4地址：虚拟机软路由openWRT的IP地址</li>
+
+
+
+<li>IPv4子网掩码：默认的255.255.255.0即可</li>
+
+
+
+<li>IPv4网关：主路由器的IP地址（也就是家里主路由器的内网IP）</li>
+
+
+
+<li>使用自定义的DNS服务器：同上，也是主路由器的IP地址，我这里还添加了一个8.8.8.8的谷歌DNS，大家根据自己的情况吧</li>
+</ul>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-102-1024x505.png" alt="" class="wp-image-1695"/></figure>
+
+
+
+<p>这里要注意 DHCP 服务器的配置。这里勾选了就表示是主路由分配DHCP，这里不勾选就需要在主路由中关闭DHCP。因为我需要主路由器分配DHCP，所以这里必须勾选“忽略此接口”，完成之后点击右下角的“保存并应用”。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-103-1024x506.png" alt="" class="wp-image-1696"/></figure>
+
+
+
+<p>然后再次点击LAN口“修改”页面，在“基础设置”页面下方点击”IPv6设置“，然后把按照上图一样，把红色方框里面的选项全部设置为”停用“。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-104-1024x510.png" alt="" class="wp-image-1697"/></figure>
+
+
+
+<p>然后在“物理设置”这里，取消勾选“桥接接口”，最后再点击右下角的“保存并应用”即可，到这里OpenWrt 软路由基本算是设置完成了。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-105-1024x495.png" alt="" class="wp-image-1698"/></figure>
+
+
+
+<p>最后我们也可以在“诊断”里面看一下我们设置好之后的网络有没有问题。如果能“Ping”通，就说明我们的设置没有问题。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-106-1024x427.png" alt="" class="wp-image-1699"/></figure>
+
+
+
+<p>最后就是看我们的需求。如果需要全屋设备都使用软路由的某些功能，我们只需要对路由器进行设置。以华硕路由器为例，进入路由器的后台，我们选择“内部网络–DHCP服务器”，然后<strong>“默认网关”和“DNS服务器”这两个地方全部改成OpenWrt 软路由的IP地址！</strong>，最后点击路由器的“保存或者应用”即可！</p>
+
+
+
+<p>如果说你只需要特定的设备端使用软路由的功能，<strong>路由器中的设置不用动</strong>！我们只需要将该设备的DNS服务器手动指向OpenWrt 软路由的IP地址即可！上图是局域网内电脑的设置方法。在“网络连接”里面，点击我们使用中的网络“属性–IPv4–属性”，首选DNS服务器直接改即可。</p>
+
+
+
+<h2  class="wp-block-heading"><a name="toc-9"></a>配置 PassWall 插件科学上网</h2>
+
+
+
+<p>进入“服务-PassWall”配置节点。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-107-1024x524.png" alt="" class="wp-image-1700"/></figure>
+
+
+
+<p>点击“节点列表”，添加自己的机场节点。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-108-1024x373.png" alt="" class="wp-image-1701"/></figure>
+
+
+
+<p>添加完成后，进入“基本设置”，选择使用自己的机场节点，然后点击“保存&amp;应用”。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-109-1024x495.png" alt="" class="wp-image-1702"/></figure>
+
+
+
+<p>点击“谷歌连接”和“GitHub连接”下面的“点我检测”，如果连接成功则会出现连接的时间，这表示节点设置成功，可以开始科学上网了。</p>
+
+
+
+<figure class="wp-block-image"><img decoding="async" src="https://nas.yanghong.dev:8200/wp-content/uploads/2024/05/image-110-1024x524.png" alt="" class="wp-image-1703"/></figure>
+<div class="post-views content-post post-792 entry-meta">
+				<span class="post-views-icon dashicons dashicons-chart-bar"></span> <span class="post-views-label">浏览量:</span> <span class="post-views-count">3,976</span>
+			</div>                        </div>
+                                                <div class="footer clearfix">
+                            <div class="tags float-left">
+                                <span>标签：</span>
+                                <a href="https://blog.yanghong.dev/tag/nas/" rel="tag">NAS</a> <a href="https://blog.yanghong.dev/tag/synology/" rel="tag">Synology</a>                            </div>
+                            <div class="tool float-right d-none d-lg-block">
+                                <span>最后更新：2024年6月10日</span>
+                            </div>
+                        </div>
+                    </div>
+                                <div class="toolbar clearfix" style="background-color: #0097ee;">
+<!--
+	<div class="meta float-md-left">
+		<img src="https://sdn.geekzu.org/avatar/8075590f51e656bcc2b32f12377eb661?s=96&r=g">
+		<p class="name">hy</p>
+		<p class="motto mb-0">一个分享技术心得和个人动态的blog
+欢迎留言交流讨论。</p>
+	</div>
+-->
+        <p class="neon text-center">予人玫瑰，手有余香。如果您觉得本文对您有帮助，请点赞或打赏。</p>
+<!--
+        <div class="share float-md-center text-center">
+            <a style="color: white; font-size: 20px;">与人玫瑰，手有余香。如果您觉得本文对您有帮助，请点赞或打赏。</a>
+            <p class="neon">与人玫瑰，手有余香。如果您觉得本文对您有帮助，请点赞或打赏。</p>
+        </div>
+-->
+	<div class="share float-md-center text-center">
+		<!--
+			<a href="javascript:;" id="donate" class="btn btn-donate mr-3" role="button"><i class="kicon i-donate"></i> 打赏</a>
+-->
+			<a href="javascript:;" id="donate" class="btn btn-donate mr-3" role="button" style="margin-left : 10px; margin-right : 10px;"><i class="kicon i-donate"></i> 打赏</a>
+				<a href="javascript:;" id="thumbs" data-action="love" data-id="792" role="button" style="margin-left : 10px; margin-right : 10px;" class="btn btn-thumbs "><i class="kicon i-like"></i><span class="ml-1">点赞</span></a>
+	</div>
+</div>
+                <nav class="navigation post-navigation clearfix" role="navigation">
+                    <div class="nav-previous clearfix"><a title="安装和配置 Fail2ban 以保护 SSH" href="https://blog.yanghong.dev/fail2ban/">< 上一篇</a></div>                </nav>
+                	<div class="comments" id="comments">
+		<h3 class="title">文章评论</h3>
+		<div class="list">
+			        <li class="comment cleanfix" id="comment-370">
+            <div class="avatar float-left d-inline-block mr-2">
+                <img alt='' src='https://sdn.geekzu.org/avatar/515e8fbc0b25db7906feae3ad044c67c?s=50&#038;r=g' srcset='https://sdn.geekzu.org/avatar/515e8fbc0b25db7906feae3ad044c67c?s=100&#038;r=g 2x' class='avatar avatar-50 photo' height='50' width='50' decoding='async'/>            </div>
+            <div class="info clearfix">
+                <cite class="author_name">ccas</cite>
+                                <div class="content pb-2">
+                    <p>大佬，根据教程，设置好了软路由，但是Nas自身该如何利用这个软路由进行上网？</p>
+                </div>
+                <div class="meta clearfix">
+                    <div class="date d-inline-block float-left">2024年7月10日                                            </div>
+                    <div class="tool reply ml-2 d-inline-block float-right">
+                        <a rel="nofollow" class="comment-reply-login" href="https://blog.yanghong.dev/wp-login.php?redirect_to=https%3A%2F%2Fblog.yanghong.dev%2Fsynology-nas-openwrt%2F">登录以回复</a>                    </div>
+                </div>
+            </div>
+    <ul class="children">
+        <li class="comment cleanfix" id="comment-372">
+            <div class="avatar float-left d-inline-block mr-2">
+                <img alt='' src='https://sdn.geekzu.org/avatar/8075590f51e656bcc2b32f12377eb661?s=50&#038;r=g' srcset='https://sdn.geekzu.org/avatar/8075590f51e656bcc2b32f12377eb661?s=100&#038;r=g 2x' class='avatar avatar-50 photo' height='50' width='50' decoding='async'/>            </div>
+            <div class="info clearfix">
+                <cite class="author_name"><a href="https://blog.yanghong.dev" class="url" rel="ugc">hy</a></cite>
+                                <div class="content pb-2">
+                    <p><span>@ccas</span> 把NAS网络设置里的gateway和dns服务器都设置能openwrt的IP地址就可以了。</p>
+                </div>
+                <div class="meta clearfix">
+                    <div class="date d-inline-block float-left">2024年7月17日                                            </div>
+                    <div class="tool reply ml-2 d-inline-block float-right">
+                        <a rel="nofollow" class="comment-reply-login" href="https://blog.yanghong.dev/wp-login.php?redirect_to=https%3A%2F%2Fblog.yanghong.dev%2Fsynology-nas-openwrt%2F">登录以回复</a>                    </div>
+                </div>
+            </div>
+    </li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+		</div>
+		<div id="commentpage" class="nav text-center my-2">
+								</div>
+		<div id="respond" class="comment-respond mt-2">
+							<div class="error text-center">
+					您需要 <a href="https://blog.yanghong.dev/synology-nas-openwrt/#login">登录</a> 之后才可以评论				</div>
+					</div>
+	</div>
+            </div>
+                            <div class="col-lg-4 sidebar sticky-sidebar d-none d-lg-block">
+                    <div class="widget w-toc">
+<div class="title">文章目录</div>
+<div class="item"><ul class="ul-toc">
+<li class="li-2"><a href="#toc-1">软路由方案的选择</a><ul class="ul-3">
+<li class="li-3"><a href="#toc-2">1. 开源软路由系统</a></li>
+<li class="li-3"><a href="#toc-3">2. 商业软路由解决方案</a></li>
+<li class="li-3"><a href="#toc-4">3. 自定义软路由解决方案</a></li>
+</ul>
+</li><li class="li-2"><a href="#toc-5">安装 OpenWRT</a><ul class="ul-3">
+<li class="li-3"><a href="#toc-6">1. 下载 OpenWRT</a></li>
+<li class="li-3"><a href="#toc-7">2. 安装 OpenWRT</a></li>
+</ul>
+</li><li class="li-2"><a href="#toc-8">配置 OpenWRT</a></li>
+<li class="li-2"><a href="#toc-9">配置 PassWall 插件科学上网</a></li>
+</ul>
+</div>
+</div><div class="widget w-recommended">        <div class="nav nav-tabs d-none d-xl-flex" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link " id="nav-new-tab" data-toggle="tab" href="#nav-new" role="tab" aria-controls="nav-new" aria-selected="false"><i class="kicon i-tabnew"></i>最新</a>
+            <a class="nav-item nav-link active" id="nav-hot-tab" data-toggle="tab" href="#nav-hot" role="tab" aria-controls="nav-hot" aria-selected="true"><i class="kicon i-tabhot"></i>热点</a>
+            <a class="nav-item nav-link " id="nav-random-tab" data-toggle="tab" href="#nav-random" role="tab" aria-controls="nav-random" aria-selected="false"><i class="kicon i-tabrandom"></i>随机</a>
+        </div>
+        <div class="nav nav-tabs d-xl-none" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link " id="nav-new-tab" data-toggle="tab" href="#nav-new" role="tab" aria-controls="nav-new" aria-selected="false">最新</a>
+            <a class="nav-item nav-link active" id="nav-hot-tab" data-toggle="tab" href="#nav-hot" role="tab" aria-controls="nav-hot" aria-selected="true">热点</a>
+            <a class="nav-item nav-link " id="nav-random-tab" data-toggle="tab" href="#nav-random" role="tab" aria-controls="nav-random" aria-selected="false">随机</a>
+        </div>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade " id="nav-new" role="tabpanel" aria-labelledby="nav-new-tab">
+                                    <a class="bookmark-item" rel="bookmark" title="使用 PyTorch 从头构建自己的 Llama 3 架构" href="https://blog.yanghong.dev/build-your-own-llama3-from-scratch-with-pytorch/"><i class="kicon i-book"></i>使用 PyTorch 从头构建自己的 Llama 3 架构</a>
+                                    <a class="bookmark-item" rel="bookmark" title="英特尔携手新松打造高性能移动巡检机器人，加速行业智能化转型" href="https://blog.yanghong.dev/intel-siasun-mtl-amr-wp/"><i class="kicon i-book"></i>英特尔携手新松打造高性能移动巡检机器人，加速行业智能化转型</a>
+                                    <a class="bookmark-item" rel="bookmark" title="在英特尔® 酷睿™ Ultra7处理器上优化和部署Phi-3-min模型" href="https://blog.yanghong.dev/core-ultra7-phi3-mini/"><i class="kicon i-book"></i>在英特尔® 酷睿™ Ultra7处理器上优化和部署Phi-3-min模型</a>
+                                    <a class="bookmark-item" rel="bookmark" title="使用 Optimum Intel 和 OpenVINO™ 加速 Hugging Face Transformer 模型的推理" href="https://blog.yanghong.dev/optimum-intel-openvino-accelerate-transformer/"><i class="kicon i-book"></i>使用 Optimum Intel 和 OpenVINO™ 加速 Hugging Face Transformer 模型的推理</a>
+                                    <a class="bookmark-item" rel="bookmark" title="Intel® OpenVINO™ 实操：优化 YOLOv10" href="https://blog.yanghong.dev/intel-openvino-yolov10-optimization/"><i class="kicon i-book"></i>Intel® OpenVINO™ 实操：优化 YOLOv10</a>
+                                    <a class="bookmark-item" rel="bookmark" title="Intel® OpenVINO™ 2024.2 版本正式发布" href="https://blog.yanghong.dev/intel-openvino-2024-2-release/"><i class="kicon i-book"></i>Intel® OpenVINO™ 2024.2 版本正式发布</a>
+                            </div>
+            <div class="tab-pane fade show active" id="nav-hot" role="tabpanel" aria-labelledby="nav-hot-tab">
+                <a class="bookmark-item" title="Llama-Factory + Ollama 打造属于自己的中文版 Llama3" href="https://blog.yanghong.dev/llama3-chinese-fine-tune/" rel="bookmark"><i class="kicon i-book"></i>Llama-Factory + Ollama 打造属于自己的中文版 Llama3</a><a class="bookmark-item" title="群晖NAS使用第三方m.2 NVME SSD硬盘" href="https://blog.yanghong.dev/synology-create-m2-volume/" rel="bookmark"><i class="kicon i-book"></i>群晖NAS使用第三方m.2 NVME SSD硬盘</a><a class="bookmark-item" title="Emby 添加 m3u 观看电视直播" href="https://blog.yanghong.dev/emby-live-tv/" rel="bookmark"><i class="kicon i-book"></i>Emby 添加 m3u 观看电视直播</a><a class="bookmark-item" title="群晖 NAS 安装 OpenWRT 软路由实现科学上网" href="https://blog.yanghong.dev/synology-nas-openwrt/" rel="bookmark"><i class="kicon i-book"></i>群晖 NAS 安装 OpenWRT 软路由实现科学上网</a><a class="bookmark-item" title="炫酷的 ComfyUI 工作流程 #3 – 高清修复老照片" href="https://blog.yanghong.dev/comfyui-photo-restoration/" rel="bookmark"><i class="kicon i-book"></i>炫酷的 ComfyUI 工作流程 #3 – 高清修复老照片</a><a class="bookmark-item" title="Apple 发布 OpenELM：专为移动设备上运行的 AI 模型" href="https://blog.yanghong.dev/apple-openelm/" rel="bookmark"><i class="kicon i-book"></i>Apple 发布 OpenELM：专为移动设备上运行的 AI 模型</a>            </div>
+            <div class="tab-pane fade " id="nav-random" role="tabpanel" aria-labelledby="nav-random-tab">
+                                    <a class="bookmark-item" rel="bookmark" title="Huggingface Text Generation Inference Toolkit 文本生成推理工具包" href="https://blog.yanghong.dev/huggingface-text-generation-inference/"><i class="kicon i-book"></i>Huggingface Text Generation Inference Toolkit 文本生成推理工具包</a>
+                                    <a class="bookmark-item" rel="bookmark" title="台积电代工，AI 算力暴涨：英特尔 Lunar Lake 详解" href="https://blog.yanghong.dev/intel-announce-lunar-lake/"><i class="kicon i-book"></i>台积电代工，AI 算力暴涨：英特尔 Lunar Lake 详解</a>
+                                    <a class="bookmark-item" rel="bookmark" title="ROS 2基础概念#4：消息（Message）| ROS 2学习笔记" href="https://blog.yanghong.dev/ros2-message/"><i class="kicon i-book"></i>ROS 2基础概念#4：消息（Message）| ROS 2学习笔记</a>
+                                    <a class="bookmark-item" rel="bookmark" title="Stable Diffusion WebUI系列 | 在Windows上安装" href="https://blog.yanghong.dev/stable-diffusion-webui-windows/"><i class="kicon i-book"></i>Stable Diffusion WebUI系列 | 在Windows上安装</a>
+                                    <a class="bookmark-item" rel="bookmark" title="NAS系统折腾记 | 安装ARPL和Synology DSM" href="https://blog.yanghong.dev/nas-diy-arpl-dsm/"><i class="kicon i-book"></i>NAS系统折腾记 | 安装ARPL和Synology DSM</a>
+                                    <a class="bookmark-item" rel="bookmark" title="NAS系统折腾记 | 设置科学上网环境" href="https://blog.yanghong.dev/nas-clash-vpn/"><i class="kicon i-book"></i>NAS系统折腾记 | 设置科学上网环境</a>
+                            </div>
+        </div>
+    </div><div class="widget widget_xt_visitor_counter"><link rel='stylesheet' type='text/css' href='https://blog.yanghong.dev/wp-content/plugins/xt-visitor-counter/styles/css/default.css' />	<div id='mvcwid' image/calculator>
+	<div id="xtvccount"><img src='https://blog.yanghong.dev/wp-content/plugins/xt-visitor-counter/styles/image/calculator/1.gif' alt='1'><img src='https://blog.yanghong.dev/wp-content/plugins/xt-visitor-counter/styles/image/calculator/1.gif' alt='1'><img src='https://blog.yanghong.dev/wp-content/plugins/xt-visitor-counter/styles/image/calculator/5.gif' alt='5'><img src='https://blog.yanghong.dev/wp-content/plugins/xt-visitor-counter/styles/image/calculator/8.gif' alt='8'><img src='https://blog.yanghong.dev/wp-content/plugins/xt-visitor-counter/styles/image/calculator/8.gif' alt='8'><img src='https://blog.yanghong.dev/wp-content/plugins/xt-visitor-counter/styles/image/calculator/1.gif' alt='1'></div>
+	<div id="xtvctable">
+		<div id="xtvcvisit" image/calculator><img src='https://blog.yanghong.dev/wp-content/plugins/xt-visitor-counter/counter/mvcvisit.png'> 今日访客人数 : 146</div>
+				<div id="xtvcmonth" image/calculator><img src='https://blog.yanghong.dev/wp-content/plugins/xt-visitor-counter/counter/mvcmonth.png'> 本月访客人数 : 146</div>
+			<div id="xtvcyear" image/calculator><img src='https://blog.yanghong.dev/wp-content/plugins/xt-visitor-counter/counter/mvcyear.png'> 今年访客人数 : 115881</div>
+			<div id="xtvctotal" image/calculator><img src='https://blog.yanghong.dev/wp-content/plugins/xt-visitor-counter/counter/mvctotal.png'> 总访客人数 : 115881</div>
+			<div id="xtvcviews" image/calculator><img src='https://blog.yanghong.dev/wp-content/plugins/xt-visitor-counter/counter/mvctoday.png'> 今日浏览量 : 222</div>
+			<div id="xtvctotalviews" image/calculator><img src='https://blog.yanghong.dev/wp-content/plugins/xt-visitor-counter/counter/mvctotalviews.png'> 总浏览量 : 221142</div>
+			<div id="xtvconline" image/calculator><img src='https://blog.yanghong.dev/wp-content/plugins/xt-visitor-counter/counter/mvconline.png'> 在线总人数 : 5</div>
+		</div>
+		<div id="xtvcip">您的IP地址 : 108.181.23.225</div>
+			
+		</div>
+	</div>                </div>
+                    </div>
+    </div>
+</div>
+<div class="k-footer">
+    <div class="f-toolbox">
+        <div class="gotop ">
+            <div class="gotop-btn">
+                <span class="kicon i-up"></span>
+            </div>
+        </div>
+                <div class="search">
+            <span class="kicon i-find"></span>
+            <form class="search-form" role="search" method="get" action="https://blog.yanghong.dev/">
+                <input type="text" name="s" id="search-footer" placeholder="搜点什么呢?" style="display:none" />
+            </form>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <p class="social">
+                                    </p>
+                <p>COPYRIGHT © 2024 HY's Blog. ALL RIGHTS RESERVED.</p>            </div>
+        </div>
+    </div>
+</div>
+				<script type='text/javascript'><!--
+			var seriesdropdown = document.getElementById("orgseries_dropdown");
+			if (seriesdropdown) {
+			 function onSeriesChange() {
+					if ( seriesdropdown.options[seriesdropdown.selectedIndex].value != ( 0 || -1 ) ) {
+						location.href = "https://blog.yanghong.dev/series/"+seriesdropdown.options[seriesdropdown.selectedIndex].value;
+					}
+				}
+				seriesdropdown.onchange = onSeriesChange;
+			}
+			--></script>
+			
+<div class="xoo-el-container" style="visibility: hidden;">
+    <div class="xoo-el-opac"></div>
+    <div class="xoo-el-modal">
+        <div class="xoo-el-inmodal">
+            <span class="xoo-el-close xoo-el-icon-cancel-circle"></span>
+            <div class="xoo-el-wrap">
+                <div class="xoo-el-sidebar"></div>
+                <div class="xoo-el-srcont">
+                    <div class="xoo-el-main">
+                        
+<div class="xoo-el-form-container xoo-el-form-popup" data-active="login">
+
+	
+	
+	
+<div class="xoo-el-header">
+	<ul class="xoo-el-tabs">
+
+        		  <li data-tab="login" class="xoo-el-login-tgr">登录</li>
+        
+		 
+			<li data-tab="register" class="xoo-el-reg-tgr">注册</li>
+		
+	</ul>
+</div>
+	
+	
+			
+		<div data-section="login" class="xoo-el-section">
+
+			<div class="xoo-el-fields">
+
+				<div class="xoo-el-notice"></div>
+				<form class="xoo-el-action-form xoo-el-form-login">
+
+					
+					<div class="xoo-aff-group xoo-aff-cont-text one xoo-aff-cont-required xoo-el-username_cont"><label for=xoo-el-username class="xoo-aff-label">用户名/电子邮件</label><div class="xoo-aff-input-group"><span class="xoo-aff-input-icon fas fa-user-plus"></span><input type="text" class="xoo-aff-required xoo-aff-text" name="xoo-el-username" placeholder="请输入用户名/电子邮件"  value="" required="	"/></div></div><div class="xoo-aff-group xoo-aff-cont-password one xoo-aff-cont-required xoo-el-password_cont"><label for=xoo-el-password class="xoo-aff-label">密码</label><div class="xoo-aff-input-group"><span class="xoo-aff-input-icon fas fa-key"></span><input type="password" class="xoo-aff-required xoo-aff-password" name="xoo-el-password" placeholder="请输入密码"  value="" autocomplete="new-password" required="	"/><div class="xoo-aff-pw-toggle">
+					<span class="xoo-aff-pwtog-show"><i class="far fa-eye"></i></span>
+					<span class="xoo-aff-pwtog-hide"><i class="far fa-eye-slash"></i></span>
+					</div></div></div>
+<div class="xoo-aff-group xoo-el-login-btm-fields">
+	<label class="xoo-el-form-label">
+		<input type="checkbox" name="xoo-el-rememberme" value="forever" />
+		<span>Remember me</span>
+	</label>
+	<a class="xoo-el-lostpw-tgr" rel="nofollow" href="#">Forgot Password?</a>
+</div>
+
+
+<input type="hidden" name="_xoo_el_form" value="login">
+
+<button type="submit" class="button btn xoo-el-action-btn xoo-el-login-btn" >登录</button>
+
+<input type="hidden" name="xoo_el_redirect" value="/synology-nas-openwrt/">
+					
+				</form>
+
+				
+			</div>
+
+		</div>
+
+	
+			
+		<div data-section="register" class="xoo-el-section">
+
+			<div class="xoo-el-fields">
+
+				<div class="xoo-el-notice"></div>
+				<form class="xoo-el-action-form xoo-el-form-register">
+
+					
+					<div class="xoo-aff-group xoo-aff-cont-text one xoo-aff-cont-required xoo_el_reg_username_cont"><label for=xoo_el_reg_username class="xoo-aff-label">用户名</label><div class="xoo-aff-input-group"><span class="xoo-aff-input-icon fas fa-user-plus"></span><input type="text" class="xoo-aff-required xoo-aff-text" name="xoo_el_reg_username" placeholder="请输入用户名"  value="" maxlength="20" minlength="3" required="	"/></div></div><div class="xoo-aff-group xoo-aff-cont-email one xoo-aff-cont-required xoo_el_reg_email_cont"><label for=xoo_el_reg_email class="xoo-aff-label">电子邮件</label><div class="xoo-aff-input-group"><span class="xoo-aff-input-icon fas fa-at"></span><input type="email" class="xoo-aff-required xoo-aff-email" name="xoo_el_reg_email" placeholder="请输入Email地址"  value="" autocomplete="email" required="	"/></div></div><div class="xoo-aff-group xoo-aff-cont-text onehalf xoo-aff-cont-required xoo_el_reg_fname_cont"><label for=xoo_el_reg_fname class="xoo-aff-label">名</label><div class="xoo-aff-input-group"><span class="xoo-aff-input-icon far fa-user"></span><input type="text" class="xoo-aff-required xoo-aff-text" name="xoo_el_reg_fname" placeholder="请输入名字"  value="" required="	"/></div></div><div class="xoo-aff-group xoo-aff-cont-text onehalf xoo-aff-cont-required xoo_el_reg_lname_cont"><label for=xoo_el_reg_lname class="xoo-aff-label">姓</label><div class="xoo-aff-input-group"><span class="xoo-aff-input-icon far fa-user"></span><input type="text" class="xoo-aff-required xoo-aff-text" name="xoo_el_reg_lname" placeholder="请输入姓氏"  value="" required="	"/></div></div><div class="xoo-aff-group xoo-aff-cont-password one xoo-aff-cont-required xoo_el_reg_pass_cont"><label for=xoo_el_reg_pass class="xoo-aff-label">密码</label><div class="xoo-aff-input-group"><span class="xoo-aff-input-icon fas fa-key"></span><input type="password" class="xoo-aff-required xoo-aff-password" name="xoo_el_reg_pass" placeholder="请输入密码"  value="" maxlength="20" minlength="6" autocomplete="new-password" required="	"/><div class="xoo-aff-pw-toggle">
+					<span class="xoo-aff-pwtog-show"><i class="far fa-eye"></i></span>
+					<span class="xoo-aff-pwtog-hide"><i class="far fa-eye-slash"></i></span>
+					</div></div></div><div class="xoo-aff-group xoo-aff-cont-password one xoo-aff-cont-required xoo_el_reg_pass_again_cont"><label for=xoo_el_reg_pass_again class="xoo-aff-label">确认密码</label><div class="xoo-aff-input-group"><span class="xoo-aff-input-icon fas fa-key"></span><input type="password" class="xoo-aff-required xoo-aff-password" name="xoo_el_reg_pass_again" placeholder="请确认密码"  value="" autocomplete="new-password" required="	"/><div class="xoo-aff-pw-toggle">
+					<span class="xoo-aff-pwtog-show"><i class="far fa-eye"></i></span>
+					<span class="xoo-aff-pwtog-hide"><i class="far fa-eye-slash"></i></span>
+					</div></div></div><div class="xoo-aff-group xoo-aff-cont-checkbox_single one xoo-aff-cont-required xoo_el_reg_terms_cont"><div class="xoo-aff-required xoo-aff-checkbox_single"><label><input type="checkbox" name="xoo_el_reg_terms" class="xoo-aff-required xoo-aff-checkbox_single" value="yes" >我接受 <a href="privacy-policy" target="_blank"> 服务和隐私条款 </a></label></div></div>
+<input type="hidden" name="_xoo_el_form" value="register">
+
+
+<button type="submit" class="button btn xoo-el-action-btn xoo-el-register-btn">注册</button>
+
+<input type="hidden" name="xoo_el_redirect" value="/synology-nas-openwrt/">
+					
+				</form>
+
+				
+			</div>
+
+		</div>
+
+	
+			
+		<div data-section="lostpw" class="xoo-el-section">
+
+			<div class="xoo-el-fields">
+
+				<div class="xoo-el-notice"></div>
+				<form class="xoo-el-action-form xoo-el-form-lostpw">
+
+					
+					
+
+<span class="xoo-el-form-txt">Lost your password? Please enter your username or email address. You will receive a link to create a new password via email.</span>
+
+<div class="xoo-aff-group xoo-aff-cont-text one xoo-aff-cont-required user_login_cont"><label for=user_login class="xoo-aff-label">密码找回</label><div class="xoo-aff-input-group"><span class="xoo-aff-input-icon fas fa-user-plus"></span><input type="text" class="xoo-aff-required xoo-aff-text" name="user_login" placeholder="请输入用户名/电子邮件"  value="" required="	"/></div></div>
+
+<input type="hidden" name="_xoo_el_form" value="lostPassword">
+
+<input type="hidden" name="_wp_http_referer" value="/synology-nas-openwrt/" />
+<button type="submit" class="button btn xoo-el-action-btn xoo-el-lostpw-btn">发送密码重置链接</button>
+					
+				</form>
+
+				
+			</div>
+
+		</div>
+
+	
+	
+</div>                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><script type="text/javascript" id="addtoany-core-js-before">
+/* <![CDATA[ */
+window.a2a_config=window.a2a_config||{};a2a_config.callbacks=[];a2a_config.overlays=[];a2a_config.templates={};a2a_localize = {
+	Share: "分享",
+	Save: "收藏",
+	Subscribe: "订阅",
+	Email: "电子邮件",
+	Bookmark: "书签",
+	ShowAll: "显示全部服务",
+	ShowLess: "显示部分服务",
+	FindServices: "查找服务",
+	FindAnyServiceToAddTo: "动态查找任何用以添加的服务",
+	PoweredBy: "Powered by",
+	ShareViaEmail: "通过电子邮件分享",
+	SubscribeViaEmail: "通过电子邮件订阅",
+	BookmarkInYourBrowser: "添加为浏览器书签",
+	BookmarkInstructions: "按Ctrl+D或\u2318+D可将此页面加入书签。",
+	AddToYourFavorites: "添加至收藏夹",
+	SendFromWebOrProgram: "通过任何电邮地址或电邮程序发送",
+	EmailProgram: "电子邮件程序",
+	More: "更多&#8230;",
+	ThanksForSharing: "感谢分享！",
+	ThanksForFollowing: "感谢您的关注！"
+};
+/* ]]> */
+</script>
+<script type="text/javascript" async src="https://static.addtoany.com/menu/page.js" id="addtoany-core-js"></script>
+<script type="text/javascript" async src="https://blog.yanghong.dev/wp-content/plugins/add-to-any/addtoany.min.js?ver=1.1" id="addtoany-jquery-js"></script>
+<script type="text/javascript" src="https://blog.yanghong.dev/wp-content/plugins/easy-login-woocommerce/xoo-form-fields-fw/lib/select2/select2.js?ver=1.1" id="select2-js"></script>
+<script type="text/javascript" id="xoo-aff-js-js-extra">
+/* <![CDATA[ */
+var xoo_aff_localize = {"adminurl":"https:\/\/blog.yanghong.dev\/wp-admin\/admin-ajax.php","countries":"{\"AF\":\"Afghanistan\",\"AX\":\"\u00c5land Islands\",\"AL\":\"Albania\",\"DZ\":\"Algeria\",\"AS\":\"American Samoa\",\"AD\":\"Andorra\",\"AO\":\"Angola\",\"AI\":\"Anguilla\",\"AQ\":\"Antarctica\",\"AG\":\"Antigua and Barbuda\",\"AR\":\"Argentina\",\"AM\":\"Armenia\",\"AW\":\"Aruba\",\"AU\":\"Australia\",\"AT\":\"Austria\",\"AZ\":\"Azerbaijan\",\"BS\":\"Bahamas\",\"BH\":\"Bahrain\",\"BD\":\"Bangladesh\",\"BB\":\"Barbados\",\"BY\":\"Belarus\",\"BE\":\"Belgium\",\"PW\":\"Belau\",\"BZ\":\"Belize\",\"BJ\":\"Benin\",\"BM\":\"Bermuda\",\"BT\":\"Bhutan\",\"BO\":\"Bolivia\",\"BQ\":\"Bonaire, Saint Eustatius and Saba\",\"BA\":\"Bosnia and Herzegovina\",\"BW\":\"Botswana\",\"BV\":\"Bouvet Island\",\"BR\":\"Brazil\",\"IO\":\"British Indian Ocean Territory\",\"BN\":\"Brunei\",\"BG\":\"Bulgaria\",\"BF\":\"Burkina Faso\",\"BI\":\"Burundi\",\"KH\":\"Cambodia\",\"CM\":\"Cameroon\",\"CA\":\"Canada\",\"CV\":\"Cape Verde\",\"KY\":\"Cayman Islands\",\"CF\":\"Central African Republic\",\"TD\":\"Chad\",\"CL\":\"Chile\",\"CN\":\"China\",\"CX\":\"Christmas Island\",\"CC\":\"Cocos (Keeling) Islands\",\"CO\":\"Colombia\",\"KM\":\"Comoros\",\"CG\":\"Congo (Brazzaville)\",\"CD\":\"Congo (Kinshasa)\",\"CK\":\"Cook Islands\",\"CR\":\"Costa Rica\",\"HR\":\"Croatia\",\"CU\":\"Cuba\",\"CW\":\"Cura\u00e7ao\",\"CY\":\"Cyprus\",\"CZ\":\"Czech Republic\",\"DK\":\"Denmark\",\"DJ\":\"Djibouti\",\"DM\":\"Dominica\",\"DO\":\"Dominican Republic\",\"EC\":\"Ecuador\",\"EG\":\"Egypt\",\"SV\":\"El Salvador\",\"GQ\":\"Equatorial Guinea\",\"ER\":\"Eritrea\",\"EE\":\"Estonia\",\"ET\":\"Ethiopia\",\"FK\":\"Falkland Islands\",\"FO\":\"Faroe Islands\",\"FJ\":\"Fiji\",\"FI\":\"Finland\",\"FR\":\"France\",\"GF\":\"French Guiana\",\"PF\":\"French Polynesia\",\"TF\":\"French Southern Territories\",\"GA\":\"Gabon\",\"GM\":\"Gambia\",\"GE\":\"Georgia\",\"DE\":\"Germany\",\"GH\":\"Ghana\",\"GI\":\"Gibraltar\",\"GR\":\"Greece\",\"GL\":\"Greenland\",\"GD\":\"Grenada\",\"GP\":\"Guadeloupe\",\"GU\":\"Guam\",\"GT\":\"Guatemala\",\"GG\":\"Guernsey\",\"GN\":\"Guinea\",\"GW\":\"Guinea-Bissau\",\"GY\":\"Guyana\",\"HT\":\"Haiti\",\"HM\":\"Heard Island and McDonald Islands\",\"HN\":\"Honduras\",\"HK\":\"Hong Kong\",\"HU\":\"Hungary\",\"IS\":\"Iceland\",\"IN\":\"India\",\"ID\":\"Indonesia\",\"IR\":\"Iran\",\"IQ\":\"Iraq\",\"IE\":\"Ireland\",\"IM\":\"Isle of Man\",\"IL\":\"Israel\",\"IT\":\"Italy\",\"CI\":\"Ivory Coast\",\"JM\":\"Jamaica\",\"JP\":\"Japan\",\"JE\":\"Jersey\",\"JO\":\"Jordan\",\"KZ\":\"Kazakhstan\",\"KE\":\"Kenya\",\"KI\":\"Kiribati\",\"KW\":\"Kuwait\",\"KG\":\"Kyrgyzstan\",\"LA\":\"Laos\",\"LV\":\"Latvia\",\"LB\":\"Lebanon\",\"LS\":\"Lesotho\",\"LR\":\"Liberia\",\"LY\":\"Libya\",\"LI\":\"Liechtenstein\",\"LT\":\"Lithuania\",\"LU\":\"Luxembourg\",\"MO\":\"Macao S.A.R., China\",\"MK\":\"North Macedonia\",\"MG\":\"Madagascar\",\"MW\":\"Malawi\",\"MY\":\"Malaysia\",\"MV\":\"Maldives\",\"ML\":\"Mali\",\"MT\":\"Malta\",\"MH\":\"Marshall Islands\",\"MQ\":\"Martinique\",\"MR\":\"Mauritania\",\"MU\":\"Mauritius\",\"YT\":\"Mayotte\",\"MX\":\"Mexico\",\"FM\":\"Micronesia\",\"MD\":\"Moldova\",\"MC\":\"Monaco\",\"MN\":\"Mongolia\",\"ME\":\"Montenegro\",\"MS\":\"Montserrat\",\"MA\":\"Morocco\",\"MZ\":\"Mozambique\",\"MM\":\"Myanmar\",\"NA\":\"Namibia\",\"NR\":\"Nauru\",\"NP\":\"Nepal\",\"NL\":\"Netherlands\",\"NC\":\"New Caledonia\",\"NZ\":\"New Zealand\",\"NI\":\"Nicaragua\",\"NE\":\"Niger\",\"NG\":\"Nigeria\",\"NU\":\"Niue\",\"NF\":\"Norfolk Island\",\"MP\":\"Northern Mariana Islands\",\"KP\":\"North Korea\",\"NO\":\"Norway\",\"OM\":\"Oman\",\"PK\":\"Pakistan\",\"PS\":\"Palestinian Territory\",\"PA\":\"Panama\",\"PG\":\"Papua New Guinea\",\"PY\":\"Paraguay\",\"PE\":\"Peru\",\"PH\":\"Philippines\",\"PN\":\"Pitcairn\",\"PL\":\"Poland\",\"PT\":\"Portugal\",\"PR\":\"Puerto Rico\",\"QA\":\"Qatar\",\"RE\":\"Reunion\",\"RO\":\"Romania\",\"RU\":\"Russia\",\"RW\":\"Rwanda\",\"BL\":\"Saint Barth\u00e9lemy\",\"SH\":\"Saint Helena\",\"KN\":\"Saint Kitts and Nevis\",\"LC\":\"Saint Lucia\",\"MF\":\"Saint Martin (French part)\",\"SX\":\"Saint Martin (Dutch part)\",\"PM\":\"Saint Pierre and Miquelon\",\"VC\":\"Saint Vincent and the Grenadines\",\"SM\":\"San Marino\",\"ST\":\"S\u00e3o Tom\u00e9 and Pr\u00edncipe\",\"SA\":\"Saudi Arabia\",\"SN\":\"Senegal\",\"RS\":\"Serbia\",\"SC\":\"Seychelles\",\"SL\":\"Sierra Leone\",\"SG\":\"Singapore\",\"SK\":\"Slovakia\",\"SI\":\"Slovenia\",\"SB\":\"Solomon Islands\",\"SO\":\"Somalia\",\"ZA\":\"South Africa\",\"GS\":\"South Georgia\\\/Sandwich Islands\",\"KR\":\"South Korea\",\"SS\":\"South Sudan\",\"ES\":\"Spain\",\"LK\":\"Sri Lanka\",\"SD\":\"Sudan\",\"SR\":\"Suriname\",\"SJ\":\"Svalbard and Jan Mayen\",\"SZ\":\"Swaziland\",\"SE\":\"Sweden\",\"CH\":\"Switzerland\",\"SY\":\"Syria\",\"TW\":\"Taiwan\",\"TJ\":\"Tajikistan\",\"TZ\":\"Tanzania\",\"TH\":\"Thailand\",\"TL\":\"Timor-Leste\",\"TG\":\"Togo\",\"TK\":\"Tokelau\",\"TO\":\"Tonga\",\"TT\":\"Trinidad and Tobago\",\"TN\":\"Tunisia\",\"TR\":\"Turkey\",\"TM\":\"Turkmenistan\",\"TC\":\"Turks and Caicos Islands\",\"TV\":\"Tuvalu\",\"UG\":\"Uganda\",\"UA\":\"Ukraine\",\"AE\":\"United Arab Emirates\",\"GB\":\"United Kingdom (UK)\",\"US\":\"United States (US)\",\"UM\":\"United States (US) Minor Outlying Islands\",\"UY\":\"Uruguay\",\"UZ\":\"Uzbekistan\",\"VU\":\"Vanuatu\",\"VA\":\"Vatican\",\"VE\":\"Venezuela\",\"VN\":\"Vietnam\",\"VG\":\"Virgin Islands (British)\",\"VI\":\"Virgin Islands (US)\",\"WF\":\"Wallis and Futuna\",\"EH\":\"Western Sahara\",\"WS\":\"Samoa\",\"YE\":\"Yemen\",\"ZM\":\"Zambia\",\"ZW\":\"Zimbabwe\"}","states":"{\"AF\":[],\"AO\":{\"BGO\":\"Bengo\",\"BLU\":\"Benguela\",\"BIE\":\"Bi\\u00e9\",\"CAB\":\"Cabinda\",\"CNN\":\"Cunene\",\"HUA\":\"Huambo\",\"HUI\":\"Hu\\u00edla\",\"CCU\":\"Kuando Kubango\",\"CNO\":\"Kwanza-Norte\",\"CUS\":\"Kwanza-Sul\",\"LUA\":\"Luanda\",\"LNO\":\"Lunda-Norte\",\"LSU\":\"Lunda-Sul\",\"MAL\":\"Malanje\",\"MOX\":\"Moxico\",\"NAM\":\"Namibe\",\"UIG\":\"U\\u00edge\",\"ZAI\":\"Zaire\"},\"AR\":{\"C\":\"Ciudad Aut\u00f3noma de Buenos Aires\",\"B\":\"Buenos Aires\",\"K\":\"Catamarca\",\"H\":\"Chaco\",\"U\":\"Chubut\",\"X\":\"C\u00f3rdoba\",\"W\":\"Corrientes\",\"E\":\"Entre R\u00edos\",\"P\":\"Formosa\",\"Y\":\"Jujuy\",\"L\":\"La Pampa\",\"F\":\"La Rioja\",\"M\":\"Mendoza\",\"N\":\"Misiones\",\"Q\":\"Neuqu\u00e9n\",\"R\":\"R\u00edo Negro\",\"A\":\"Salta\",\"J\":\"San Juan\",\"D\":\"San Luis\",\"Z\":\"Santa Cruz\",\"S\":\"Santa Fe\",\"G\":\"Santiago del Estero\",\"V\":\"Tierra del Fuego\",\"T\":\"Tucum\u00e1n\"},\"AT\":[],\"AU\":{\"ACT\":\"Australian Capital Territory\",\"NSW\":\"New South Wales\",\"NT\":\"Northern Territory\",\"QLD\":\"Queensland\",\"SA\":\"South Australia\",\"TAS\":\"Tasmania\",\"VIC\":\"Victoria\",\"WA\":\"Western Australia\"},\"AX\":[],\"BD\":{\"BD-05\":\"Bagerhat\",\"BD-01\":\"Bandarban\",\"BD-02\":\"Barguna\",\"BD-06\":\"Barishal\",\"BD-07\":\"Bhola\",\"BD-03\":\"Bogura\",\"BD-04\":\"Brahmanbaria\",\"BD-09\":\"Chandpur\",\"BD-10\":\"Chattogram\",\"BD-12\":\"Chuadanga\",\"BD-11\":\"Cox's Bazar\",\"BD-08\":\"Cumilla\",\"BD-13\":\"Dhaka\",\"BD-14\":\"Dinajpur\",\"BD-15\":\"Faridpur \",\"BD-16\":\"Feni\",\"BD-19\":\"Gaibandha\",\"BD-18\":\"Gazipur\",\"BD-17\":\"Gopalganj\",\"BD-20\":\"Habiganj\",\"BD-21\":\"Jamalpur\",\"BD-22\":\"Jashore\",\"BD-25\":\"Jhalokati\",\"BD-23\":\"Jhenaidah\",\"BD-24\":\"Joypurhat\",\"BD-29\":\"Khagrachhari\",\"BD-27\":\"Khulna\",\"BD-26\":\"Kishoreganj\",\"BD-28\":\"Kurigram\",\"BD-30\":\"Kushtia\",\"BD-31\":\"Lakshmipur\",\"BD-32\":\"Lalmonirhat\",\"BD-36\":\"Madaripur\",\"BD-37\":\"Magura\",\"BD-33\":\"Manikganj \",\"BD-39\":\"Meherpur\",\"BD-38\":\"Moulvibazar\",\"BD-35\":\"Munshiganj\",\"BD-34\":\"Mymensingh\",\"BD-48\":\"Naogaon\",\"BD-43\":\"Narail\",\"BD-40\":\"Narayanganj\",\"BD-42\":\"Narsingdi\",\"BD-44\":\"Natore\",\"BD-45\":\"Nawabganj\",\"BD-41\":\"Netrakona\",\"BD-46\":\"Nilphamari\",\"BD-47\":\"Noakhali\",\"BD-49\":\"Pabna\",\"BD-52\":\"Panchagarh\",\"BD-51\":\"Patuakhali\",\"BD-50\":\"Pirojpur\",\"BD-53\":\"Rajbari\",\"BD-54\":\"Rajshahi\",\"BD-56\":\"Rangamati\",\"BD-55\":\"Rangpur\",\"BD-58\":\"Satkhira\",\"BD-62\":\"Shariatpur\",\"BD-57\":\"Sherpur\",\"BD-59\":\"Sirajganj\",\"BD-61\":\"Sunamganj\",\"BD-60\":\"Sylhet\",\"BD-63\":\"Tangail\",\"BD-64\":\"Thakurgaon\"},\"BE\":[],\"BG\":{\"BG-01\":\"Blagoevgrad\",\"BG-02\":\"Burgas\",\"BG-08\":\"Dobrich\",\"BG-07\":\"Gabrovo\",\"BG-26\":\"Haskovo\",\"BG-09\":\"Kardzhali\",\"BG-10\":\"Kyustendil\",\"BG-11\":\"Lovech\",\"BG-12\":\"Montana\",\"BG-13\":\"Pazardzhik\",\"BG-14\":\"Pernik\",\"BG-15\":\"Pleven\",\"BG-16\":\"Plovdiv\",\"BG-17\":\"Razgrad\",\"BG-18\":\"Ruse\",\"BG-27\":\"Shumen\",\"BG-19\":\"Silistra\",\"BG-20\":\"Sliven\",\"BG-21\":\"Smolyan\",\"BG-23\":\"Sofia\",\"BG-22\":\"Sofia-Grad\",\"BG-24\":\"Stara Zagora\",\"BG-25\":\"Targovishte\",\"BG-03\":\"Varna\",\"BG-04\":\"Veliko Tarnovo\",\"BG-05\":\"Vidin\",\"BG-06\":\"Vratsa\",\"BG-28\":\"Yambol\"},\"BH\":[],\"BI\":[],\"BO\":{\"B\":\"Chuquisaca\",\"H\":\"Beni\",\"C\":\"Cochabamba\",\"L\":\"La Paz\",\"O\":\"Oruro\",\"N\":\"Pando\",\"P\":\"Potos\\u00ed\",\"S\":\"Santa Cruz\",\"T\":\"Tarija\"},\"BR\":{\"AC\":\"Acre\",\"AL\":\"Alagoas\",\"AP\":\"Amap\u00e1\",\"AM\":\"Amazonas\",\"BA\":\"Bahia\",\"CE\":\"Cear\u00e1\",\"DF\":\"Distrito Federal\",\"ES\":\"Esp\u00edrito Santo\",\"GO\":\"Goi\u00e1s\",\"MA\":\"Maranh\u00e3o\",\"MT\":\"Mato Grosso\",\"MS\":\"Mato Grosso do Sul\",\"MG\":\"Minas Gerais\",\"PA\":\"Par\u00e1\",\"PB\":\"Para\u00edba\",\"PR\":\"Paran\u00e1\",\"PE\":\"Pernambuco\",\"PI\":\"Piau\u00ed\",\"RJ\":\"Rio de Janeiro\",\"RN\":\"Rio Grande do Norte\",\"RS\":\"Rio Grande do Sul\",\"RO\":\"Rond\u00f4nia\",\"RR\":\"Roraima\",\"SC\":\"Santa Catarina\",\"SP\":\"S\u00e3o Paulo\",\"SE\":\"Sergipe\",\"TO\":\"Tocantins\"},\"CA\":{\"AB\":\"Alberta\",\"BC\":\"British Columbia\",\"MB\":\"Manitoba\",\"NB\":\"New Brunswick\",\"NL\":\"Newfoundland and Labrador\",\"NT\":\"Northwest Territories\",\"NS\":\"Nova Scotia\",\"NU\":\"Nunavut\",\"ON\":\"Ontario\",\"PE\":\"Prince Edward Island\",\"QC\":\"Quebec\",\"SK\":\"Saskatchewan\",\"YT\":\"Yukon Territory\"},\"CH\":{\"AG\":\"Aargau\",\"AR\":\"Appenzell Ausserrhoden\",\"AI\":\"Appenzell Innerrhoden\",\"BL\":\"Basel-Landschaft\",\"BS\":\"Basel-Stadt\",\"BE\":\"Bern\",\"FR\":\"Fribourg\",\"GE\":\"Geneva\",\"GL\":\"Glarus\",\"GR\":\"Graub\u00fcnden\",\"JU\":\"Jura\",\"LU\":\"Luzern\",\"NE\":\"Neuch\u00e2tel\",\"NW\":\"Nidwalden\",\"OW\":\"Obwalden\",\"SH\":\"Schaffhausen\",\"SZ\":\"Schwyz\",\"SO\":\"Solothurn\",\"SG\":\"St. Gallen\",\"TG\":\"Thurgau\",\"TI\":\"Ticino\",\"UR\":\"Uri\",\"VS\":\"Valais\",\"VD\":\"Vaud\",\"ZG\":\"Zug\",\"ZH\":\"Z\u00fcrich\"},\"CN\":{\"CN1\":\"Yunnan \\\/ \u4e91\u5357\",\"CN2\":\"Beijing \\\/ \u5317\u4eac\",\"CN3\":\"Tianjin \\\/ \u5929\u6d25\",\"CN4\":\"Hebei \\\/ \u6cb3\u5317\",\"CN5\":\"Shanxi \\\/ \u5c71\u897f\",\"CN6\":\"Inner Mongolia \\\/ \u5167\u8499\u53e4\",\"CN7\":\"Liaoning \\\/ \u8fbd\u5b81\",\"CN8\":\"Jilin \\\/ \u5409\u6797\",\"CN9\":\"Heilongjiang \\\/ \u9ed1\u9f99\u6c5f\",\"CN10\":\"Shanghai \\\/ \u4e0a\u6d77\",\"CN11\":\"Jiangsu \\\/ \u6c5f\u82cf\",\"CN12\":\"Zhejiang \\\/ \u6d59\u6c5f\",\"CN13\":\"Anhui \\\/ \u5b89\u5fbd\",\"CN14\":\"Fujian \\\/ \u798f\u5efa\",\"CN15\":\"Jiangxi \\\/ \u6c5f\u897f\",\"CN16\":\"Shandong \\\/ \u5c71\u4e1c\",\"CN17\":\"Henan \\\/ \u6cb3\u5357\",\"CN18\":\"Hubei \\\/ \u6e56\u5317\",\"CN19\":\"Hunan \\\/ \u6e56\u5357\",\"CN20\":\"Guangdong \\\/ \u5e7f\u4e1c\",\"CN21\":\"Guangxi Zhuang \\\/ \u5e7f\u897f\u58ee\u65cf\",\"CN22\":\"Hainan \\\/ \u6d77\u5357\",\"CN23\":\"Chongqing \\\/ \u91cd\u5e86\",\"CN24\":\"Sichuan \\\/ \u56db\u5ddd\",\"CN25\":\"Guizhou \\\/ \u8d35\u5dde\",\"CN26\":\"Shaanxi \\\/ \u9655\u897f\",\"CN27\":\"Gansu \\\/ \u7518\u8083\",\"CN28\":\"Qinghai \\\/ \u9752\u6d77\",\"CN29\":\"Ningxia Hui \\\/ \u5b81\u590f\",\"CN30\":\"Macau \\\/ \u6fb3\u95e8\",\"CN31\":\"Tibet \\\/ \u897f\u85cf\",\"CN32\":\"Xinjiang \\\/ \u65b0\u7586\"},\"CZ\":[],\"DE\":[],\"DK\":[],\"EE\":[],\"ES\":{\"C\":\"A Coru\u00f1a\",\"VI\":\"Araba\\\/\u00c1lava\",\"AB\":\"Albacete\",\"A\":\"Alicante\",\"AL\":\"Almer\u00eda\",\"O\":\"Asturias\",\"AV\":\"\u00c1vila\",\"BA\":\"Badajoz\",\"PM\":\"Baleares\",\"B\":\"Barcelona\",\"BU\":\"Burgos\",\"CC\":\"C\u00e1ceres\",\"CA\":\"C\u00e1diz\",\"S\":\"Cantabria\",\"CS\":\"Castell\u00f3n\",\"CE\":\"Ceuta\",\"CR\":\"Ciudad Real\",\"CO\":\"C\u00f3rdoba\",\"CU\":\"Cuenca\",\"GI\":\"Girona\",\"GR\":\"Granada\",\"GU\":\"Guadalajara\",\"SS\":\"Gipuzkoa\",\"H\":\"Huelva\",\"HU\":\"Huesca\",\"J\":\"Ja\u00e9n\",\"LO\":\"La Rioja\",\"GC\":\"Las Palmas\",\"LE\":\"Le\u00f3n\",\"L\":\"Lleida\",\"LU\":\"Lugo\",\"M\":\"Madrid\",\"MA\":\"M\u00e1laga\",\"ML\":\"Melilla\",\"MU\":\"Murcia\",\"NA\":\"Navarra\",\"OR\":\"Ourense\",\"P\":\"Palencia\",\"PO\":\"Pontevedra\",\"SA\":\"Salamanca\",\"TF\":\"Santa Cruz de Tenerife\",\"SG\":\"Segovia\",\"SE\":\"Sevilla\",\"SO\":\"Soria\",\"T\":\"Tarragona\",\"TE\":\"Teruel\",\"TO\":\"Toledo\",\"V\":\"Valencia\",\"VA\":\"Valladolid\",\"BI\":\"Bizkaia\",\"ZA\":\"Zamora\",\"Z\":\"Zaragoza\"},\"FI\":[],\"FR\":[],\"GP\":[],\"GR\":{\"I\":\"\\u0391\\u03c4\\u03c4\\u03b9\\u03ba\\u03ae\",\"A\":\"\\u0391\\u03bd\\u03b1\\u03c4\\u03bf\\u03bb\\u03b9\\u03ba\\u03ae \\u039c\\u03b1\\u03ba\\u03b5\\u03b4\\u03bf\\u03bd\\u03af\\u03b1 \\u03ba\\u03b1\\u03b9 \\u0398\\u03c1\\u03ac\\u03ba\\u03b7\",\"B\":\"\\u039a\\u03b5\\u03bd\\u03c4\\u03c1\\u03b9\\u03ba\\u03ae \\u039c\\u03b1\\u03ba\\u03b5\\u03b4\\u03bf\\u03bd\\u03af\\u03b1\",\"C\":\"\\u0394\\u03c5\\u03c4\\u03b9\\u03ba\\u03ae \\u039c\\u03b1\\u03ba\\u03b5\\u03b4\\u03bf\\u03bd\\u03af\\u03b1\",\"D\":\"\\u0389\\u03c0\\u03b5\\u03b9\\u03c1\\u03bf\\u03c2\",\"E\":\"\\u0398\\u03b5\\u03c3\\u03c3\\u03b1\\u03bb\\u03af\\u03b1\",\"F\":\"\\u0399\\u03cc\\u03bd\\u03b9\\u03bf\\u03b9 \\u039d\\u03ae\\u03c3\\u03bf\\u03b9\",\"G\":\"\\u0394\\u03c5\\u03c4\\u03b9\\u03ba\\u03ae \\u0395\\u03bb\\u03bb\\u03ac\\u03b4\\u03b1\",\"H\":\"\\u03a3\\u03c4\\u03b5\\u03c1\\u03b5\\u03ac \\u0395\\u03bb\\u03bb\\u03ac\\u03b4\\u03b1\",\"J\":\"\\u03a0\\u03b5\\u03bb\\u03bf\\u03c0\\u03cc\\u03bd\\u03bd\\u03b7\\u03c3\\u03bf\\u03c2\",\"K\":\"\\u0392\\u03cc\\u03c1\\u03b5\\u03b9\\u03bf \\u0391\\u03b9\\u03b3\\u03b1\\u03af\\u03bf\",\"L\":\"\\u039d\\u03cc\\u03c4\\u03b9\\u03bf \\u0391\\u03b9\\u03b3\\u03b1\\u03af\\u03bf\",\"M\":\"\\u039a\\u03c1\\u03ae\\u03c4\\u03b7\"},\"GF\":[],\"HK\":{\"HONG KONG\":\"Hong Kong Island\",\"KOWLOON\":\"Kowloon\",\"NEW TERRITORIES\":\"New Territories\"},\"HU\":{\"BK\":\"B\\u00e1cs-Kiskun\",\"BE\":\"B\\u00e9k\\u00e9s\",\"BA\":\"Baranya\",\"BZ\":\"Borsod-Aba\\u00faj-Zempl\\u00e9n\",\"BU\":\"Budapest\",\"CS\":\"Csongr\\u00e1d\",\"FE\":\"Fej\\u00e9r\",\"GS\":\"Gy\\u0151r-Moson-Sopron\",\"HB\":\"Hajd\\u00fa-Bihar\",\"HE\":\"Heves\",\"JN\":\"J\\u00e1sz-Nagykun-Szolnok\",\"KE\":\"Kom\\u00e1rom-Esztergom\",\"NO\":\"N\\u00f3gr\\u00e1d\",\"PE\":\"Pest\",\"SO\":\"Somogy\",\"SZ\":\"Szabolcs-Szatm\\u00e1r-Bereg\",\"TO\":\"Tolna\",\"VA\":\"Vas\",\"VE\":\"Veszpr\\u00e9m\",\"ZA\":\"Zala\"},\"ID\":{\"AC\":\"Daerah Istimewa Aceh\",\"SU\":\"Sumatera Utara\",\"SB\":\"Sumatera Barat\",\"RI\":\"Riau\",\"KR\":\"Kepulauan Riau\",\"JA\":\"Jambi\",\"SS\":\"Sumatera Selatan\",\"BB\":\"Bangka Belitung\",\"BE\":\"Bengkulu\",\"LA\":\"Lampung\",\"JK\":\"DKI Jakarta\",\"JB\":\"Jawa Barat\",\"BT\":\"Banten\",\"JT\":\"Jawa Tengah\",\"JI\":\"Jawa Timur\",\"YO\":\"Daerah Istimewa Yogyakarta\",\"BA\":\"Bali\",\"NB\":\"Nusa Tenggara Barat\",\"NT\":\"Nusa Tenggara Timur\",\"KB\":\"Kalimantan Barat\",\"KT\":\"Kalimantan Tengah\",\"KI\":\"Kalimantan Timur\",\"KS\":\"Kalimantan Selatan\",\"KU\":\"Kalimantan Utara\",\"SA\":\"Sulawesi Utara\",\"ST\":\"Sulawesi Tengah\",\"SG\":\"Sulawesi Tenggara\",\"SR\":\"Sulawesi Barat\",\"SN\":\"Sulawesi Selatan\",\"GO\":\"Gorontalo\",\"MA\":\"Maluku\",\"MU\":\"Maluku Utara\",\"PA\":\"Papua\",\"PB\":\"Papua Barat\"},\"IE\":{\"CW\":\"Carlow\",\"CN\":\"Cavan\",\"CE\":\"Clare\",\"CO\":\"Cork\",\"DL\":\"Donegal\",\"D\":\"Dublin\",\"G\":\"Galway\",\"KY\":\"Kerry\",\"KE\":\"Kildare\",\"KK\":\"Kilkenny\",\"LS\":\"Laois\",\"LM\":\"Leitrim\",\"LK\":\"Limerick\",\"LD\":\"Longford\",\"LH\":\"Louth\",\"MO\":\"Mayo\",\"MH\":\"Meath\",\"MN\":\"Monaghan\",\"OY\":\"Offaly\",\"RN\":\"Roscommon\",\"SO\":\"Sligo\",\"TA\":\"Tipperary\",\"WD\":\"Waterford\",\"WH\":\"Westmeath\",\"WX\":\"Wexford\",\"WW\":\"Wicklow\"},\"IN\":{\"AP\":\"Andhra Pradesh\",\"AR\":\"Arunachal Pradesh\",\"AS\":\"Assam\",\"BR\":\"Bihar\",\"CT\":\"Chhattisgarh\",\"GA\":\"Goa\",\"GJ\":\"Gujarat\",\"HR\":\"Haryana\",\"HP\":\"Himachal Pradesh\",\"JK\":\"Jammu and Kashmir\",\"JH\":\"Jharkhand\",\"KA\":\"Karnataka\",\"KL\":\"Kerala\",\"MP\":\"Madhya Pradesh\",\"MH\":\"Maharashtra\",\"MN\":\"Manipur\",\"ML\":\"Meghalaya\",\"MZ\":\"Mizoram\",\"NL\":\"Nagaland\",\"OR\":\"Orissa\",\"PB\":\"Punjab\",\"RJ\":\"Rajasthan\",\"SK\":\"Sikkim\",\"TN\":\"Tamil Nadu\",\"TS\":\"Telangana\",\"TR\":\"Tripura\",\"UK\":\"Uttarakhand\",\"UP\":\"Uttar Pradesh\",\"WB\":\"West Bengal\",\"AN\":\"Andaman and Nicobar Islands\",\"CH\":\"Chandigarh\",\"DN\":\"Dadra and Nagar Haveli\",\"DD\":\"Daman and Diu\",\"DL\":\"Delhi\",\"LD\":\"Lakshadeep\",\"PY\":\"Pondicherry (Puducherry)\"},\"IR\":{\"KHZ\":\"Khuzestan  (\\u062e\\u0648\\u0632\\u0633\\u062a\\u0627\\u0646)\",\"THR\":\"Tehran  (\\u062a\\u0647\\u0631\\u0627\\u0646)\",\"ILM\":\"Ilaam (\\u0627\\u06cc\\u0644\\u0627\\u0645)\",\"BHR\":\"Bushehr (\\u0628\\u0648\\u0634\\u0647\\u0631)\",\"ADL\":\"Ardabil (\\u0627\\u0631\\u062f\\u0628\\u06cc\\u0644)\",\"ESF\":\"Isfahan (\\u0627\\u0635\\u0641\\u0647\\u0627\\u0646)\",\"YZD\":\"Yazd (\\u06cc\\u0632\\u062f)\",\"KRH\":\"Kermanshah (\\u06a9\\u0631\\u0645\\u0627\\u0646\\u0634\\u0627\\u0647)\",\"KRN\":\"Kerman (\\u06a9\\u0631\\u0645\\u0627\\u0646)\",\"HDN\":\"Hamadan (\\u0647\\u0645\\u062f\\u0627\\u0646)\",\"GZN\":\"Ghazvin (\\u0642\\u0632\\u0648\\u06cc\\u0646)\",\"ZJN\":\"Zanjan (\\u0632\\u0646\\u062c\\u0627\\u0646)\",\"LRS\":\"Luristan (\\u0644\\u0631\\u0633\\u062a\\u0627\\u0646)\",\"ABZ\":\"Alborz (\\u0627\\u0644\\u0628\\u0631\\u0632)\",\"EAZ\":\"East Azarbaijan (\\u0622\\u0630\\u0631\\u0628\\u0627\\u06cc\\u062c\\u0627\\u0646 \\u0634\\u0631\\u0642\\u06cc)\",\"WAZ\":\"West Azarbaijan (\\u0622\\u0630\\u0631\\u0628\\u0627\\u06cc\\u062c\\u0627\\u0646 \\u063a\\u0631\\u0628\\u06cc)\",\"CHB\":\"Chaharmahal and Bakhtiari (\\u0686\\u0647\\u0627\\u0631\\u0645\\u062d\\u0627\\u0644 \\u0648 \\u0628\\u062e\\u062a\\u06cc\\u0627\\u0631\\u06cc)\",\"SKH\":\"South Khorasan (\\u062e\\u0631\\u0627\\u0633\\u0627\\u0646 \\u062c\\u0646\\u0648\\u0628\\u06cc)\",\"RKH\":\"Razavi Khorasan (\\u062e\\u0631\\u0627\\u0633\\u0627\\u0646 \\u0631\\u0636\\u0648\\u06cc)\",\"NKH\":\"North Khorasan (\\u062e\\u0631\\u0627\\u0633\\u0627\\u0646 \\u0634\\u0645\\u0627\\u0644\\u06cc)\",\"SMN\":\"Semnan (\\u0633\\u0645\\u0646\\u0627\\u0646)\",\"FRS\":\"Fars (\\u0641\\u0627\\u0631\\u0633)\",\"QHM\":\"Qom (\\u0642\\u0645)\",\"KRD\":\"Kurdistan \\\/ \\u06a9\\u0631\\u062f\\u0633\\u062a\\u0627\\u0646)\",\"KBD\":\"Kohgiluyeh and BoyerAhmad (\\u06a9\\u0647\\u06af\\u06cc\\u0644\\u0648\\u06cc\\u06cc\\u0647 \\u0648 \\u0628\\u0648\\u06cc\\u0631\\u0627\\u062d\\u0645\\u062f)\",\"GLS\":\"Golestan (\\u06af\\u0644\\u0633\\u062a\\u0627\\u0646)\",\"GIL\":\"Gilan (\\u06af\\u06cc\\u0644\\u0627\\u0646)\",\"MZN\":\"Mazandaran (\\u0645\\u0627\\u0632\\u0646\\u062f\\u0631\\u0627\\u0646)\",\"MKZ\":\"Markazi (\\u0645\\u0631\\u06a9\\u0632\\u06cc)\",\"HRZ\":\"Hormozgan (\\u0647\\u0631\\u0645\\u0632\\u06af\\u0627\\u0646)\",\"SBN\":\"Sistan and Baluchestan (\\u0633\\u06cc\\u0633\\u062a\\u0627\\u0646 \\u0648 \\u0628\\u0644\\u0648\\u0686\\u0633\\u062a\\u0627\\u0646)\"},\"IS\":[],\"IT\":{\"AG\":\"Agrigento\",\"AL\":\"Alessandria\",\"AN\":\"Ancona\",\"AO\":\"Aosta\",\"AR\":\"Arezzo\",\"AP\":\"Ascoli Piceno\",\"AT\":\"Asti\",\"AV\":\"Avellino\",\"BA\":\"Bari\",\"BT\":\"Barletta-Andria-Trani\",\"BL\":\"Belluno\",\"BN\":\"Benevento\",\"BG\":\"Bergamo\",\"BI\":\"Biella\",\"BO\":\"Bologna\",\"BZ\":\"Bolzano\",\"BS\":\"Brescia\",\"BR\":\"Brindisi\",\"CA\":\"Cagliari\",\"CL\":\"Caltanissetta\",\"CB\":\"Campobasso\",\"CE\":\"Caserta\",\"CT\":\"Catania\",\"CZ\":\"Catanzaro\",\"CH\":\"Chieti\",\"CO\":\"Como\",\"CS\":\"Cosenza\",\"CR\":\"Cremona\",\"KR\":\"Crotone\",\"CN\":\"Cuneo\",\"EN\":\"Enna\",\"FM\":\"Fermo\",\"FE\":\"Ferrara\",\"FI\":\"Firenze\",\"FG\":\"Foggia\",\"FC\":\"Forl\\u00ec-Cesena\",\"FR\":\"Frosinone\",\"GE\":\"Genova\",\"GO\":\"Gorizia\",\"GR\":\"Grosseto\",\"IM\":\"Imperia\",\"IS\":\"Isernia\",\"SP\":\"La Spezia\",\"AQ\":\"L'Aquila\",\"LT\":\"Latina\",\"LE\":\"Lecce\",\"LC\":\"Lecco\",\"LI\":\"Livorno\",\"LO\":\"Lodi\",\"LU\":\"Lucca\",\"MC\":\"Macerata\",\"MN\":\"Mantova\",\"MS\":\"Massa-Carrara\",\"MT\":\"Matera\",\"ME\":\"Messina\",\"MI\":\"Milano\",\"MO\":\"Modena\",\"MB\":\"Monza e della Brianza\",\"NA\":\"Napoli\",\"NO\":\"Novara\",\"NU\":\"Nuoro\",\"OR\":\"Oristano\",\"PD\":\"Padova\",\"PA\":\"Palermo\",\"PR\":\"Parma\",\"PV\":\"Pavia\",\"PG\":\"Perugia\",\"PU\":\"Pesaro e Urbino\",\"PE\":\"Pescara\",\"PC\":\"Piacenza\",\"PI\":\"Pisa\",\"PT\":\"Pistoia\",\"PN\":\"Pordenone\",\"PZ\":\"Potenza\",\"PO\":\"Prato\",\"RG\":\"Ragusa\",\"RA\":\"Ravenna\",\"RC\":\"Reggio Calabria\",\"RE\":\"Reggio Emilia\",\"RI\":\"Rieti\",\"RN\":\"Rimini\",\"RM\":\"Roma\",\"RO\":\"Rovigo\",\"SA\":\"Salerno\",\"SS\":\"Sassari\",\"SV\":\"Savona\",\"SI\":\"Siena\",\"SR\":\"Siracusa\",\"SO\":\"Sondrio\",\"SU\":\"Sud Sardegna\",\"TA\":\"Taranto\",\"TE\":\"Teramo\",\"TR\":\"Terni\",\"TO\":\"Torino\",\"TP\":\"Trapani\",\"TN\":\"Trento\",\"TV\":\"Treviso\",\"TS\":\"Trieste\",\"UD\":\"Udine\",\"VA\":\"Varese\",\"VE\":\"Venezia\",\"VB\":\"Verbano-Cusio-Ossola\",\"VC\":\"Vercelli\",\"VR\":\"Verona\",\"VV\":\"Vibo Valentia\",\"VI\":\"Vicenza\",\"VT\":\"Viterbo\"},\"IL\":[],\"IM\":[],\"JP\":{\"JP01\":\"Hokkaido\",\"JP02\":\"Aomori\",\"JP03\":\"Iwate\",\"JP04\":\"Miyagi\",\"JP05\":\"Akita\",\"JP06\":\"Yamagata\",\"JP07\":\"Fukushima\",\"JP08\":\"Ibaraki\",\"JP09\":\"Tochigi\",\"JP10\":\"Gunma\",\"JP11\":\"Saitama\",\"JP12\":\"Chiba\",\"JP13\":\"Tokyo\",\"JP14\":\"Kanagawa\",\"JP15\":\"Niigata\",\"JP16\":\"Toyama\",\"JP17\":\"Ishikawa\",\"JP18\":\"Fukui\",\"JP19\":\"Yamanashi\",\"JP20\":\"Nagano\",\"JP21\":\"Gifu\",\"JP22\":\"Shizuoka\",\"JP23\":\"Aichi\",\"JP24\":\"Mie\",\"JP25\":\"Shiga\",\"JP26\":\"Kyoto\",\"JP27\":\"Osaka\",\"JP28\":\"Hyogo\",\"JP29\":\"Nara\",\"JP30\":\"Wakayama\",\"JP31\":\"Tottori\",\"JP32\":\"Shimane\",\"JP33\":\"Okayama\",\"JP34\":\"Hiroshima\",\"JP35\":\"Yamaguchi\",\"JP36\":\"Tokushima\",\"JP37\":\"Kagawa\",\"JP38\":\"Ehime\",\"JP39\":\"Kochi\",\"JP40\":\"Fukuoka\",\"JP41\":\"Saga\",\"JP42\":\"Nagasaki\",\"JP43\":\"Kumamoto\",\"JP44\":\"Oita\",\"JP45\":\"Miyazaki\",\"JP46\":\"Kagoshima\",\"JP47\":\"Okinawa\"},\"KR\":[],\"KW\":[],\"LB\":[],\"LR\":{\"BM\":\"Bomi\",\"BN\":\"Bong\",\"GA\":\"Gbarpolu\",\"GB\":\"Grand Bassa\",\"GC\":\"Grand Cape Mount\",\"GG\":\"Grand Gedeh\",\"GK\":\"Grand Kru\",\"LO\":\"Lofa\",\"MA\":\"Margibi\",\"MY\":\"Maryland\",\"MO\":\"Montserrado\",\"NM\":\"Nimba\",\"RV\":\"Rivercess\",\"RG\":\"River Gee\",\"SN\":\"Sinoe\"},\"LU\":[],\"MD\":{\"C\":\"Chi\u0219in\u0103u\",\"BL\":\"B\u0103l\u021bi\",\"AN\":\"Anenii Noi\",\"BS\":\"Basarabeasca\",\"BR\":\"Briceni\",\"CH\":\"Cahul\",\"CT\":\"Cantemir\",\"CL\":\"C\u0103l\u0103ra\u0219i\",\"CS\":\"C\u0103u\u0219eni\",\"CM\":\"Cimi\u0219lia\",\"CR\":\"Criuleni\",\"DN\":\"Dondu\u0219eni\",\"DR\":\"Drochia\",\"DB\":\"Dub\u0103sari\",\"ED\":\"Edine\u021b\",\"FL\":\"F\u0103le\u0219ti\",\"FR\":\"Flore\u0219ti\",\"GE\":\"UTA G\u0103g\u0103uzia\",\"GL\":\"Glodeni\",\"HN\":\"H\u00eence\u0219ti\",\"IL\":\"Ialoveni\",\"LV\":\"Leova\",\"NS\":\"Nisporeni\",\"OC\":\"Ocni\u021ba\",\"OR\":\"Orhei\",\"RZ\":\"Rezina\",\"RS\":\"R\u00ee\u0219cani\",\"SG\":\"S\u00eengerei\",\"SR\":\"Soroca\",\"ST\":\"Str\u0103\u0219eni\",\"SD\":\"\u0218old\u0103ne\u0219ti\",\"SV\":\"\u0218tefan Vod\u0103\",\"TR\":\"Taraclia\",\"TL\":\"Telene\u0219ti\",\"UN\":\"Ungheni\"},\"MQ\":[],\"MT\":[],\"MX\":{\"DF\":\"Ciudad de M\u00e9xico\",\"JA\":\"Jalisco\",\"NL\":\"Nuevo Le\u00f3n\",\"AG\":\"Aguascalientes\",\"BC\":\"Baja California\",\"BS\":\"Baja California Sur\",\"CM\":\"Campeche\",\"CS\":\"Chiapas\",\"CH\":\"Chihuahua\",\"CO\":\"Coahuila\",\"CL\":\"Colima\",\"DG\":\"Durango\",\"GT\":\"Guanajuato\",\"GR\":\"Guerrero\",\"HG\":\"Hidalgo\",\"MX\":\"Estado de M\u00e9xico\",\"MI\":\"Michoac\u00e1n\",\"MO\":\"Morelos\",\"NA\":\"Nayarit\",\"OA\":\"Oaxaca\",\"PU\":\"Puebla\",\"QT\":\"Quer\u00e9taro\",\"QR\":\"Quintana Roo\",\"SL\":\"San Luis Potos\u00ed\",\"SI\":\"Sinaloa\",\"SO\":\"Sonora\",\"TB\":\"Tabasco\",\"TM\":\"Tamaulipas\",\"TL\":\"Tlaxcala\",\"VE\":\"Veracruz\",\"YU\":\"Yucat\u00e1n\",\"ZA\":\"Zacatecas\"},\"MY\":{\"JHR\":\"Johor\",\"KDH\":\"Kedah\",\"KTN\":\"Kelantan\",\"LBN\":\"Labuan\",\"MLK\":\"Malacca (Melaka)\",\"NSN\":\"Negeri Sembilan\",\"PHG\":\"Pahang\",\"PNG\":\"Penang (Pulau Pinang)\",\"PRK\":\"Perak\",\"PLS\":\"Perlis\",\"SBH\":\"Sabah\",\"SWK\":\"Sarawak\",\"SGR\":\"Selangor\",\"TRG\":\"Terengganu\",\"PJY\":\"Putrajaya\",\"KUL\":\"Kuala Lumpur\"},\"NG\":{\"AB\":\"Abia\",\"FC\":\"Abuja\",\"AD\":\"Adamawa\",\"AK\":\"Akwa Ibom\",\"AN\":\"Anambra\",\"BA\":\"Bauchi\",\"BY\":\"Bayelsa\",\"BE\":\"Benue\",\"BO\":\"Borno\",\"CR\":\"Cross River\",\"DE\":\"Delta\",\"EB\":\"Ebonyi\",\"ED\":\"Edo\",\"EK\":\"Ekiti\",\"EN\":\"Enugu\",\"GO\":\"Gombe\",\"IM\":\"Imo\",\"JI\":\"Jigawa\",\"KD\":\"Kaduna\",\"KN\":\"Kano\",\"KT\":\"Katsina\",\"KE\":\"Kebbi\",\"KO\":\"Kogi\",\"KW\":\"Kwara\",\"LA\":\"Lagos\",\"NA\":\"Nasarawa\",\"NI\":\"Niger\",\"OG\":\"Ogun\",\"ON\":\"Ondo\",\"OS\":\"Osun\",\"OY\":\"Oyo\",\"PL\":\"Plateau\",\"RI\":\"Rivers\",\"SO\":\"Sokoto\",\"TA\":\"Taraba\",\"YO\":\"Yobe\",\"ZA\":\"Zamfara\"},\"NL\":[],\"NO\":[],\"NP\":{\"BAG\":\"Bagmati\",\"BHE\":\"Bheri\",\"DHA\":\"Dhaulagiri\",\"GAN\":\"Gandaki\",\"JAN\":\"Janakpur\",\"KAR\":\"Karnali\",\"KOS\":\"Koshi\",\"LUM\":\"Lumbini\",\"MAH\":\"Mahakali\",\"MEC\":\"Mechi\",\"NAR\":\"Narayani\",\"RAP\":\"Rapti\",\"SAG\":\"Sagarmatha\",\"SET\":\"Seti\"},\"NZ\":{\"NL\":\"Northland\",\"AK\":\"Auckland\",\"WA\":\"Waikato\",\"BP\":\"Bay of Plenty\",\"TK\":\"Taranaki\",\"GI\":\"Gisborne\",\"HB\":\"Hawke\u2019s Bay\",\"MW\":\"Manawatu-Wanganui\",\"WE\":\"Wellington\",\"NS\":\"Nelson\",\"MB\":\"Marlborough\",\"TM\":\"Tasman\",\"WC\":\"West Coast\",\"CT\":\"Canterbury\",\"OT\":\"Otago\",\"SL\":\"Southland\"},\"PE\":{\"CAL\":\"El Callao\",\"LMA\":\"Municipalidad Metropolitana de Lima\",\"AMA\":\"Amazonas\",\"ANC\":\"Ancash\",\"APU\":\"Apur\u00edmac\",\"ARE\":\"Arequipa\",\"AYA\":\"Ayacucho\",\"CAJ\":\"Cajamarca\",\"CUS\":\"Cusco\",\"HUV\":\"Huancavelica\",\"HUC\":\"Hu\u00e1nuco\",\"ICA\":\"Ica\",\"JUN\":\"Jun\u00edn\",\"LAL\":\"La Libertad\",\"LAM\":\"Lambayeque\",\"LIM\":\"Lima\",\"LOR\":\"Loreto\",\"MDD\":\"Madre de Dios\",\"MOQ\":\"Moquegua\",\"PAS\":\"Pasco\",\"PIU\":\"Piura\",\"PUN\":\"Puno\",\"SAM\":\"San Mart\u00edn\",\"TAC\":\"Tacna\",\"TUM\":\"Tumbes\",\"UCA\":\"Ucayali\"},\"PH\":{\"ABR\":\"Abra\",\"AGN\":\"Agusan del Norte\",\"AGS\":\"Agusan del Sur\",\"AKL\":\"Aklan\",\"ALB\":\"Albay\",\"ANT\":\"Antique\",\"APA\":\"Apayao\",\"AUR\":\"Aurora\",\"BAS\":\"Basilan\",\"BAN\":\"Bataan\",\"BTN\":\"Batanes\",\"BTG\":\"Batangas\",\"BEN\":\"Benguet\",\"BIL\":\"Biliran\",\"BOH\":\"Bohol\",\"BUK\":\"Bukidnon\",\"BUL\":\"Bulacan\",\"CAG\":\"Cagayan\",\"CAN\":\"Camarines Norte\",\"CAS\":\"Camarines Sur\",\"CAM\":\"Camiguin\",\"CAP\":\"Capiz\",\"CAT\":\"Catanduanes\",\"CAV\":\"Cavite\",\"CEB\":\"Cebu\",\"COM\":\"Compostela Valley\",\"NCO\":\"Cotabato\",\"DAV\":\"Davao del Norte\",\"DAS\":\"Davao del Sur\",\"DAC\":\"Davao Occidental\",\"DAO\":\"Davao Oriental\",\"DIN\":\"Dinagat Islands\",\"EAS\":\"Eastern Samar\",\"GUI\":\"Guimaras\",\"IFU\":\"Ifugao\",\"ILN\":\"Ilocos Norte\",\"ILS\":\"Ilocos Sur\",\"ILI\":\"Iloilo\",\"ISA\":\"Isabela\",\"KAL\":\"Kalinga\",\"LUN\":\"La Union\",\"LAG\":\"Laguna\",\"LAN\":\"Lanao del Norte\",\"LAS\":\"Lanao del Sur\",\"LEY\":\"Leyte\",\"MAG\":\"Maguindanao\",\"MAD\":\"Marinduque\",\"MAS\":\"Masbate\",\"MSC\":\"Misamis Occidental\",\"MSR\":\"Misamis Oriental\",\"MOU\":\"Mountain Province\",\"NEC\":\"Negros Occidental\",\"NER\":\"Negros Oriental\",\"NSA\":\"Northern Samar\",\"NUE\":\"Nueva Ecija\",\"NUV\":\"Nueva Vizcaya\",\"MDC\":\"Occidental Mindoro\",\"MDR\":\"Oriental Mindoro\",\"PLW\":\"Palawan\",\"PAM\":\"Pampanga\",\"PAN\":\"Pangasinan\",\"QUE\":\"Quezon\",\"QUI\":\"Quirino\",\"RIZ\":\"Rizal\",\"ROM\":\"Romblon\",\"WSA\":\"Samar\",\"SAR\":\"Sarangani\",\"SIQ\":\"Siquijor\",\"SOR\":\"Sorsogon\",\"SCO\":\"South Cotabato\",\"SLE\":\"Southern Leyte\",\"SUK\":\"Sultan Kudarat\",\"SLU\":\"Sulu\",\"SUN\":\"Surigao del Norte\",\"SUR\":\"Surigao del Sur\",\"TAR\":\"Tarlac\",\"TAW\":\"Tawi-Tawi\",\"ZMB\":\"Zambales\",\"ZAN\":\"Zamboanga del Norte\",\"ZAS\":\"Zamboanga del Sur\",\"ZSI\":\"Zamboanga Sibugay\",\"00\":\"Metro Manila\"},\"PK\":{\"JK\":\"Azad Kashmir\",\"BA\":\"Balochistan\",\"TA\":\"FATA\",\"GB\":\"Gilgit Baltistan\",\"IS\":\"Islamabad Capital Territory\",\"KP\":\"Khyber Pakhtunkhwa\",\"PB\":\"Punjab\",\"SD\":\"Sindh\"},\"PL\":[],\"PT\":[],\"PY\":{\"PY-ASU\":\"Asunci\u00f3n\",\"PY-1\":\"Concepci\u00f3n\",\"PY-2\":\"San Pedro\",\"PY-3\":\"Cordillera\",\"PY-4\":\"Guair\u00e1\",\"PY-5\":\"Caaguaz\u00fa\",\"PY-6\":\"Caazap\u00e1\",\"PY-7\":\"Itap\u00faa\",\"PY-8\":\"Misiones\",\"PY-9\":\"Paraguar\u00ed\",\"PY-10\":\"Alto Paran\u00e1\",\"PY-11\":\"Central\",\"PY-12\":\"\u00d1eembuc\u00fa\",\"PY-13\":\"Amambay\",\"PY-14\":\"Canindey\u00fa\",\"PY-15\":\"Presidente Hayes\",\"PY-16\":\"Alto Paraguay\",\"PY-17\":\"Boquer\u00f3n\"},\"RE\":[],\"RO\":{\"AB\":\"Alba\",\"AR\":\"Arad\",\"AG\":\"Arge\u0219\",\"BC\":\"Bac\u0103u\",\"BH\":\"Bihor\",\"BN\":\"Bistri\u021ba-N\u0103s\u0103ud\",\"BT\":\"Boto\u0219ani\",\"BR\":\"Br\u0103ila\",\"BV\":\"Bra\u0219ov\",\"B\":\"Bucure\u0219ti\",\"BZ\":\"Buz\u0103u\",\"CL\":\"C\u0103l\u0103ra\u0219i\",\"CS\":\"Cara\u0219-Severin\",\"CJ\":\"Cluj\",\"CT\":\"Constan\u021ba\",\"CV\":\"Covasna\",\"DB\":\"D\u00e2mbovi\u021ba\",\"DJ\":\"Dolj\",\"GL\":\"Gala\u021bi\",\"GR\":\"Giurgiu\",\"GJ\":\"Gorj\",\"HR\":\"Harghita\",\"HD\":\"Hunedoara\",\"IL\":\"Ialomi\u021ba\",\"IS\":\"Ia\u0219i\",\"IF\":\"Ilfov\",\"MM\":\"Maramure\u0219\",\"MH\":\"Mehedin\u021bi\",\"MS\":\"Mure\u0219\",\"NT\":\"Neam\u021b\",\"OT\":\"Olt\",\"PH\":\"Prahova\",\"SJ\":\"S\u0103laj\",\"SM\":\"Satu Mare\",\"SB\":\"Sibiu\",\"SV\":\"Suceava\",\"TR\":\"Teleorman\",\"TM\":\"Timi\u0219\",\"TL\":\"Tulcea\",\"VL\":\"V\u00e2lcea\",\"VS\":\"Vaslui\",\"VN\":\"Vrancea\"},\"RS\":[],\"SG\":[],\"SK\":[],\"SI\":[],\"TH\":{\"TH-37\":\"Amnat Charoen\",\"TH-15\":\"Ang Thong\",\"TH-14\":\"Ayutthaya\",\"TH-10\":\"Bangkok\",\"TH-38\":\"Bueng Kan\",\"TH-31\":\"Buri Ram\",\"TH-24\":\"Chachoengsao\",\"TH-18\":\"Chai Nat\",\"TH-36\":\"Chaiyaphum\",\"TH-22\":\"Chanthaburi\",\"TH-50\":\"Chiang Mai\",\"TH-57\":\"Chiang Rai\",\"TH-20\":\"Chonburi\",\"TH-86\":\"Chumphon\",\"TH-46\":\"Kalasin\",\"TH-62\":\"Kamphaeng Phet\",\"TH-71\":\"Kanchanaburi\",\"TH-40\":\"Khon Kaen\",\"TH-81\":\"Krabi\",\"TH-52\":\"Lampang\",\"TH-51\":\"Lamphun\",\"TH-42\":\"Loei\",\"TH-16\":\"Lopburi\",\"TH-58\":\"Mae Hong Son\",\"TH-44\":\"Maha Sarakham\",\"TH-49\":\"Mukdahan\",\"TH-26\":\"Nakhon Nayok\",\"TH-73\":\"Nakhon Pathom\",\"TH-48\":\"Nakhon Phanom\",\"TH-30\":\"Nakhon Ratchasima\",\"TH-60\":\"Nakhon Sawan\",\"TH-80\":\"Nakhon Si Thammarat\",\"TH-55\":\"Nan\",\"TH-96\":\"Narathiwat\",\"TH-39\":\"Nong Bua Lam Phu\",\"TH-43\":\"Nong Khai\",\"TH-12\":\"Nonthaburi\",\"TH-13\":\"Pathum Thani\",\"TH-94\":\"Pattani\",\"TH-82\":\"Phang Nga\",\"TH-93\":\"Phatthalung\",\"TH-56\":\"Phayao\",\"TH-67\":\"Phetchabun\",\"TH-76\":\"Phetchaburi\",\"TH-66\":\"Phichit\",\"TH-65\":\"Phitsanulok\",\"TH-54\":\"Phrae\",\"TH-83\":\"Phuket\",\"TH-25\":\"Prachin Buri\",\"TH-77\":\"Prachuap Khiri Khan\",\"TH-85\":\"Ranong\",\"TH-70\":\"Ratchaburi\",\"TH-21\":\"Rayong\",\"TH-45\":\"Roi Et\",\"TH-27\":\"Sa Kaeo\",\"TH-47\":\"Sakon Nakhon\",\"TH-11\":\"Samut Prakan\",\"TH-74\":\"Samut Sakhon\",\"TH-75\":\"Samut Songkhram\",\"TH-19\":\"Saraburi\",\"TH-91\":\"Satun\",\"TH-17\":\"Sing Buri\",\"TH-33\":\"Sisaket\",\"TH-90\":\"Songkhla\",\"TH-64\":\"Sukhothai\",\"TH-72\":\"Suphan Buri\",\"TH-84\":\"Surat Thani\",\"TH-32\":\"Surin\",\"TH-63\":\"Tak\",\"TH-92\":\"Trang\",\"TH-23\":\"Trat\",\"TH-34\":\"Ubon Ratchathani\",\"TH-41\":\"Udon Thani\",\"TH-61\":\"Uthai Thani\",\"TH-53\":\"Uttaradit\",\"TH-95\":\"Yala\",\"TH-35\":\"Yasothon\"},\"TR\":{\"TR01\":\"Adana\",\"TR02\":\"Ad\u0131yaman\",\"TR03\":\"Afyon\",\"TR04\":\"A\u011fr\u0131\",\"TR05\":\"Amasya\",\"TR06\":\"Ankara\",\"TR07\":\"Antalya\",\"TR08\":\"Artvin\",\"TR09\":\"Ayd\u0131n\",\"TR10\":\"Bal\u0131kesir\",\"TR11\":\"Bilecik\",\"TR12\":\"Bing\u00f6l\",\"TR13\":\"Bitlis\",\"TR14\":\"Bolu\",\"TR15\":\"Burdur\",\"TR16\":\"Bursa\",\"TR17\":\"\u00c7anakkale\",\"TR18\":\"\u00c7ank\u0131r\u0131\",\"TR19\":\"\u00c7orum\",\"TR20\":\"Denizli\",\"TR21\":\"Diyarbak\u0131r\",\"TR22\":\"Edirne\",\"TR23\":\"Elaz\u0131\u011f\",\"TR24\":\"Erzincan\",\"TR25\":\"Erzurum\",\"TR26\":\"Eski\u015fehir\",\"TR27\":\"Gaziantep\",\"TR28\":\"Giresun\",\"TR29\":\"G\u00fcm\u00fc\u015fhane\",\"TR30\":\"Hakkari\",\"TR31\":\"Hatay\",\"TR32\":\"Isparta\",\"TR33\":\"\u0130\u00e7el\",\"TR34\":\"\u0130stanbul\",\"TR35\":\"\u0130zmir\",\"TR36\":\"Kars\",\"TR37\":\"Kastamonu\",\"TR38\":\"Kayseri\",\"TR39\":\"K\u0131rklareli\",\"TR40\":\"K\u0131r\u015fehir\",\"TR41\":\"Kocaeli\",\"TR42\":\"Konya\",\"TR43\":\"K\u00fctahya\",\"TR44\":\"Malatya\",\"TR45\":\"Manisa\",\"TR46\":\"Kahramanmara\u015f\",\"TR47\":\"Mardin\",\"TR48\":\"Mu\u011fla\",\"TR49\":\"Mu\u015f\",\"TR50\":\"Nev\u015fehir\",\"TR51\":\"Ni\u011fde\",\"TR52\":\"Ordu\",\"TR53\":\"Rize\",\"TR54\":\"Sakarya\",\"TR55\":\"Samsun\",\"TR56\":\"Siirt\",\"TR57\":\"Sinop\",\"TR58\":\"Sivas\",\"TR59\":\"Tekirda\u011f\",\"TR60\":\"Tokat\",\"TR61\":\"Trabzon\",\"TR62\":\"Tunceli\",\"TR63\":\"\u015eanl\u0131urfa\",\"TR64\":\"U\u015fak\",\"TR65\":\"Van\",\"TR66\":\"Yozgat\",\"TR67\":\"Zonguldak\",\"TR68\":\"Aksaray\",\"TR69\":\"Bayburt\",\"TR70\":\"Karaman\",\"TR71\":\"K\u0131r\u0131kkale\",\"TR72\":\"Batman\",\"TR73\":\"\u015e\u0131rnak\",\"TR74\":\"Bart\u0131n\",\"TR75\":\"Ardahan\",\"TR76\":\"I\u011fd\u0131r\",\"TR77\":\"Yalova\",\"TR78\":\"Karab\u00fck\",\"TR79\":\"Kilis\",\"TR80\":\"Osmaniye\",\"TR81\":\"D\u00fczce\"},\"TZ\":{\"TZ01\":\"Arusha\",\"TZ02\":\"Dar es Salaam\",\"TZ03\":\"Dodoma\",\"TZ04\":\"Iringa\",\"TZ05\":\"Kagera\",\"TZ06\":\"Pemba North\",\"TZ07\":\"Zanzibar North\",\"TZ08\":\"Kigoma\",\"TZ09\":\"Kilimanjaro\",\"TZ10\":\"Pemba South\",\"TZ11\":\"Zanzibar South\",\"TZ12\":\"Lindi\",\"TZ13\":\"Mara\",\"TZ14\":\"Mbeya\",\"TZ15\":\"Zanzibar West\",\"TZ16\":\"Morogoro\",\"TZ17\":\"Mtwara\",\"TZ18\":\"Mwanza\",\"TZ19\":\"Coast\",\"TZ20\":\"Rukwa\",\"TZ21\":\"Ruvuma\",\"TZ22\":\"Shinyanga\",\"TZ23\":\"Singida\",\"TZ24\":\"Tabora\",\"TZ25\":\"Tanga\",\"TZ26\":\"Manyara\",\"TZ27\":\"Geita\",\"TZ28\":\"Katavi\",\"TZ29\":\"Njombe\",\"TZ30\":\"Simiyu\"},\"LK\":[],\"SE\":[],\"US\":{\"AL\":\"Alabama\",\"AK\":\"Alaska\",\"AZ\":\"Arizona\",\"AR\":\"Arkansas\",\"CA\":\"California\",\"CO\":\"Colorado\",\"CT\":\"Connecticut\",\"DE\":\"Delaware\",\"DC\":\"District Of Columbia\",\"FL\":\"Florida\",\"GA\":\"Georgia\",\"HI\":\"Hawaii\",\"ID\":\"Idaho\",\"IL\":\"Illinois\",\"IN\":\"Indiana\",\"IA\":\"Iowa\",\"KS\":\"Kansas\",\"KY\":\"Kentucky\",\"LA\":\"Louisiana\",\"ME\":\"Maine\",\"MD\":\"Maryland\",\"MA\":\"Massachusetts\",\"MI\":\"Michigan\",\"MN\":\"Minnesota\",\"MS\":\"Mississippi\",\"MO\":\"Missouri\",\"MT\":\"Montana\",\"NE\":\"Nebraska\",\"NV\":\"Nevada\",\"NH\":\"New Hampshire\",\"NJ\":\"New Jersey\",\"NM\":\"New Mexico\",\"NY\":\"New York\",\"NC\":\"North Carolina\",\"ND\":\"North Dakota\",\"OH\":\"Ohio\",\"OK\":\"Oklahoma\",\"OR\":\"Oregon\",\"PA\":\"Pennsylvania\",\"RI\":\"Rhode Island\",\"SC\":\"South Carolina\",\"SD\":\"South Dakota\",\"TN\":\"Tennessee\",\"TX\":\"Texas\",\"UT\":\"Utah\",\"VT\":\"Vermont\",\"VA\":\"Virginia\",\"WA\":\"Washington\",\"WV\":\"West Virginia\",\"WI\":\"Wisconsin\",\"WY\":\"Wyoming\",\"AA\":\"Armed Forces (AA)\",\"AE\":\"Armed Forces (AE)\",\"AP\":\"Armed Forces (AP)\"},\"VN\":[],\"YT\":[],\"ZA\":{\"EC\":\"Eastern Cape\",\"FS\":\"Free State\",\"GP\":\"Gauteng\",\"KZN\":\"KwaZulu-Natal\",\"LP\":\"Limpopo\",\"MP\":\"Mpumalanga\",\"NC\":\"Northern Cape\",\"NW\":\"North West\",\"WC\":\"Western Cape\"}}","password_strength":{"min_password_strength":3,"i18n_password_error":"Please enter a stronger password.","i18n_password_hint":"\u63d0\u793a\uff1a\u5bc6\u7801\u5e94\u8be5\u81f3\u5c11 12 \u4e2a\u5b57\u7b26\u957f\u3002\u8981\u521b\u5efa\u5f3a\u5bc6\u7801\uff0c\u8bf7\u4f7f\u7528\u5927\u5199\u548c\u5c0f\u5199\u5b57\u6bcd\u3001\u6570\u5b57\u3001\u4ee5\u53ca\u7b26\u53f7\u5982! \u3001&quot;\u3001?\u3001 $ \u3001%\u3001^\u3001&amp;\u3001) \u7b49\u3002"}};
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://blog.yanghong.dev/wp-content/plugins/easy-login-woocommerce/xoo-form-fields-fw/assets/js/xoo-aff-js.js?ver=1.1" id="xoo-aff-js-js"></script>
+<script type="text/javascript" src="https://blog.yanghong.dev/wp-content/plugins/easy-login-woocommerce/library/smooth-scrollbar/smooth-scrollbar.js?ver=2.5" id="smooth-scrollbar-js"></script>
+<script type="text/javascript" id="xoo-el-js-js-extra">
+/* <![CDATA[ */
+var xoo_el_localize = {"adminurl":"https:\/\/blog.yanghong.dev\/wp-admin\/admin-ajax.php","redirectDelay":"300","html":{"spinner":"<i class=\"fas fa-circle-notch spinner fa-spin\" aria-hidden=\"true\"><\/i>"},"autoOpenPopup":"no","autoOpenPopupOnce":"no","aoDelay":"500"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://blog.yanghong.dev/wp-content/plugins/easy-login-woocommerce/assets/js/xoo-el-js.js?ver=2.5" id="xoo-el-js-js"></script>
+<script type="text/javascript" src="https://blog.yanghong.dev/wp-content/themes/kratos-4.3.0/assets/js/lightgallery.min.js?ver=1.4.0" id="lightgallery-js"></script>
+<script type="text/javascript" src="https://blog.yanghong.dev/wp-content/themes/kratos-4.3.0/assets/js/bootstrap.bundle.min.js?ver=4.5.0" id="bootstrap-bundle-js"></script>
+<script type="text/javascript" src="https://blog.yanghong.dev/wp-content/themes/kratos-4.3.0/assets/js/layer.min.js?ver=3.1.1" id="layer-js"></script>
+<script type="text/javascript" src="https://blog.yanghong.dev/wp-content/themes/kratos-4.3.0/assets/js/DPlayer.min.js?ver=4.3.0" id="dplayer-js"></script>
+<script type="text/javascript" id="kratos-js-extra">
+/* <![CDATA[ */
+var kratos = {"site":"https:\/\/blog.yanghong.dev","directory":"https:\/\/blog.yanghong.dev\/wp-content\/themes\/kratos-4.3.0","alipay":"https:\/\/blog.yanghong.dev\/wp-content\/uploads\/2024\/03\/alipay.jpg","wechat":"https:\/\/blog.yanghong.dev\/wp-content\/uploads\/2024\/03\/wechat.jpg","repeat":"\u60a8\u5df2\u7ecf\u8d5e\u8fc7\u4e86","thanks":"\u611f\u8c22\u60a8\u7684\u652f\u6301","donate":"\u6253\u8d4f\u4f5c\u8005","scan":"\u626b\u7801\u652f\u4ed8"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://blog.yanghong.dev/wp-content/themes/kratos-4.3.0/assets/js/kratos.js?ver=4.3.0" id="kratos-js"></script>
+<script type="text/javascript" id="comment-js-extra">
+/* <![CDATA[ */
+var ajaxcomment = {"ajax_url":"https:\/\/blog.yanghong.dev\/wp-admin\/admin-ajax.php","order":"asc","compost":"\u8bc4\u8bba\u6b63\u5728\u63d0\u4ea4\u4e2d","comsucc":"\u8bc4\u8bba\u63d0\u4ea4\u6210\u529f"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://blog.yanghong.dev/wp-content/themes/kratos-4.3.0/assets/js/comments.min.js?ver=4.3.0" id="comment-js"></script>
+
+<!-- Site Kit 添加的 Google Analytics 代码段 -->
+<script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=GT-T53RFK6" id="google_gtagjs-js" async></script>
+<script type="text/javascript" id="google_gtagjs-js-after">
+/* <![CDATA[ */
+window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}
+gtag('set', 'linker', {"domains":["blog.yanghong.dev"]} );
+gtag("js", new Date());
+gtag("set", "developer_id.dZTNiMT", true);
+gtag("config", "GT-T53RFK6");
+/* ]]> */
+</script>
+
+<!-- 结束 Site Kit 添加的 Google Analytics 代码段 -->
+</body>
+
+</html>
+
+<!-- Dynamic page generated in 0.788 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2024-10-01 16:07:15 -->
+
+<!-- super cache -->
