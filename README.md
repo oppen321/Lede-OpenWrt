@@ -10,8 +10,6 @@
 
 定制化 OpenWrt 固件，适配 x86 和 Rockchip 平台
 
-[安装指南](https://www.example.com/install) | [文档](https://www.example.com/docs) | [❤️ 支持我们](https://www.example.com/support)
-
 [![](https://img.shields.io/badge/blog-@LedeOpenWrt.svg)](https://www.example.com)
 [![](https://img.shields.io/github/v/release/oppen321/Lede-OpenWrt)](https://github.com/oppen321/Lede-OpenWrt/releases)
 [![](https://img.shields.io/github/last-commit/oppen321/Lede-OpenWrt.svg)](https://github.com/oppen321/Lede-OpenWrt/commits/main)
@@ -38,11 +36,4 @@ Lede-OpenWrt 是基于 [Lean's LEDE](https://github.com/coolsnowwolf/lede) 编�
 
 ***
 
-## 软件源
-
-**🚀 使用 [LedeTools](https://www.example.com/tools) 快速配置软件源。**
-
-确保在使用前执行 `opkg update`，如需清理旧的索引文件，运行：
-
-```bash
-rm -f /var/lock/opkg.lock
+## 
