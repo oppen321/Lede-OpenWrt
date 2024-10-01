@@ -15,7 +15,7 @@ Customized OpenWrt firmware, adapted to x86 and Rockchip platforms
 
 ***
 
-🐧 Welcome to the Lede-OpenWrt repository, which is designed to provide users with efficient and stable OpenWrt firmware, supporting a variety of devices.
+🐧 Welcome to the Lede-OpenWrt repository, which is designed to provide users with efficient and stable OpenWrt firmware, supporting a variety of devices.[简体中文](README_ZH.md) 
 
 ## Open source instructions
 
