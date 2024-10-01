@@ -9,6 +9,9 @@
 [![](https://img.shields.io/badge/blog-@LedeOpenWrt.svg)](https://www.example.com)
 [![](https://img.shields.io/github/v/release/oppen321/Lede-OpenWrt)](https://github.com/oppen321/Lede-OpenWrt/releases)
 [![](https://img.shields.io/github/last-commit/oppen321/Lede-OpenWrt.svg)](https://github.com/oppen321/Lede-OpenWrt/commits/main)
+[![](https://img.shields.io/badge/x86-Download%20X86_64-blue)](https://github.com/oppen321/Lede-OpenWrt/releases/tag/X86_64)
+[![](https://img.shields.io/badge/Rockchip-Download%20Rockchip-green)](https://github.com/oppen321/Lede-OpenWrt/releases/tag/Rockchip)
+
 
 </div>
 
