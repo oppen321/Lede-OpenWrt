@@ -20,25 +20,19 @@
 
 ***
 
-🐧 欢迎来到 Lede-OpenWrt 仓库，这里是基于 Lede 源码编译的 OpenWrt 固件。固件支持多种设备，并经过优化，确保在各种网络环境下的稳定性。
+🐧 欢迎来到 Lede-OpenWrt 仓库，专为用户提供高效、稳定的 OpenWrt 固件，支持多种设备。
 
-## 项目
+## 项目亮点
 
-- **👍 社区驱动，欢迎开发者和用户积极交流 OpenWrt 知识**<br>
-
-- **🪅 完全开源，拥抱自由软件，轻松部署私有应用**<br>
-
-- **🆙 追求强大性能和可靠性，高效享用 OpenWrt**<br>
-
-- **📦 使用 opkg 原生安装软件包，轻松开始你的 Linux 学习之旅...**<br>
+- **🌟 社区驱动**：欢迎开发者和用户交流 OpenWrt 经验与知识。
+- **🔒 完全开源**：坚守自由软件理念，支持私有应用部署。
+- **⚡ 高效性能**：优化固件以实现卓越的网络体验。
 
 ***
 
-## 开源
+## 开源说明
 
-Lede-OpenWrt 是基于开源的 [Lean's LEDE](https://github.com/coolsnowwolf/lede) 仓库编译的 OpenWrt 发行版。项目遵循 [GPL2.0](https://github.com/oppen321/Lede-OpenWrt/blob/main/COPYING) 协议，二次开发需要标注出处。
-
-固件中绝不含任何后门或监控软件，保证用户数据安全。编译过程透明，任何人都可以按照说明自行编译。
+Lede-OpenWrt 是基于 [Lean's LEDE](https://github.com/coolsnowwolf/lede) 编译而成，所有代码和修改均开放源代码。确保您的数据安全，编译过程透明。
 
 ![示例图](https://fastly.jsdelivr.net/gh/oppen321/static@main/images/opensource.jpg)
 
@@ -46,9 +40,9 @@ Lede-OpenWrt 是基于开源的 [Lean's LEDE](https://github.com/coolsnowwolf/le
 
 ## 软件源
 
-**😍 使用 [LedeTools](https://www.example.com/tools) 快速配置软件源，无需繁琐配置。**
+**🚀 使用 [LedeTools](https://www.example.com/tools) 快速配置软件源。**
 
-请确保在使用前执行 `opkg update`，如有必要，请先清除旧的索引文件：
+确保在使用前执行 `opkg update`，如需清理旧的索引文件，运行：
 
 ```bash
 rm -f /var/lock/opkg.lock
