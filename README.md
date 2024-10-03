@@ -47,10 +47,11 @@ Special thanks to the following projects for their support of this project:
 
 - [LEDE](https://github.com/coolsnowwolf)：Provide stable source code support.
 - [haibo](https://github.com/haiibo)：Provides useful YAML compilation templates.
+- [jerrykuku](https://github.com/jerrykuku): Provide argon theme support.
 
 ### Contributor
-| [LEDE](https://github.com/coolsnowwolf) | [haibo](https://github.com/haiibo) |
+| [LEDE](https://github.com/coolsnowwolf) | [haibo](https://github.com/haiibo) | [jerrykuku](https://github.com/jerrykuku) |
 | :-------------: | :-------------: |
-| <img width="100" src="https://avatars.githubusercontent.com/u/31687149"/> | <img width="100" src="https://avatars.githubusercontent.com/u/85640068?v=4"/> |
+| <img width="100" src="https://avatars.githubusercontent.com/u/31687149"/> | <img width="100" src="https://avatars.githubusercontent.com/u/85640068?v=4"/> | <img width="100" src="https://avatars.githubusercontent.com/u/9485680?v=4"/> |
 
 
