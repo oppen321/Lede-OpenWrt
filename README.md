@@ -51,7 +51,7 @@ Special thanks to the following projects for their support of this project:
 
 ### Contributor
 | [LEDE](https://github.com/coolsnowwolf) | [haibo](https://github.com/haiibo) | [jerrykuku](https://github.com/jerrykuku) |
-| :-------------: | :-------------: |
+| :-------------: | :-------------: | :-------------: |
 | <img width="100" src="https://avatars.githubusercontent.com/u/31687149"/> | <img width="100" src="https://avatars.githubusercontent.com/u/85640068?v=4"/> | <img width="100" src="https://avatars.githubusercontent.com/u/9485680?v=4"/> |
 
 
