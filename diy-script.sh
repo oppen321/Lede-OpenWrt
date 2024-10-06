@@ -83,7 +83,7 @@ git clone https://github.com/sbwml/luci-app-mosdns -b v5-lua package/mosdns
 git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
 
 # Alist
-git clone --depth=1 -b lua https://github.com/sbwml/luci-app-alist package/luci-app-alist
+git clone https://github.com/sbwml/luci-app-alist -b lua package/alist
 
 # DDNS.to
 git_sparse_clone main https://github.com/linkease/nas-packages-luci luci/luci-app-ddnsto
