@@ -8,13 +8,13 @@ on:
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
-  CONFIG_FILE: configs/x86_64-mini.config
-  DIY_SCRIPT: diy-mini.sh
+  CONFIG_FILE: configs/x86_64_test.config
+  DIY_SCRIPT: diy-test.sh
   CLASH_KERNEL: amd64
   CACHE_TOOLCHAIN: true
   UPLOAD_BIN_DIR: false
   FIRMWARE_RELEASE: true
-  FIRMWARE_TAG: X86_64_MINI
+  FIRMWARE_TAG: X86_64_Test
   TZ: Asia/Shanghai
 
 jobs:
