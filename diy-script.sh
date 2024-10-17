@@ -108,6 +108,9 @@ sed -i 's/os.date()/os.date("%a %Y-%m-%d %H:%M:%S")/g' package/lean/autocore/fil
 # 修改名称
 sed -i 's/OpenWrt/ZeroWrt/' package/base-files/files/bin/config_generate
 
+# 自定义设置
+cp -f $GITHUB_WORKSPACE/Diy/banner package/base-files/files/etc/banner
+
 # 修改版本为编译日期
 date_version=$(date +"%y.%m.%d")
 orig_version=$(cat "package/lean/default-settings/files/zzz-default-settings" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
