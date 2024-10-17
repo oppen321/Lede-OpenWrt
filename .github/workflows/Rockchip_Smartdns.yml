@@ -1,4 +1,4 @@
-name: Rockchip_OpenWrt
+name: Rockchip_OpenWrt smartdns
 
 on:
   workflow_dispatch:
