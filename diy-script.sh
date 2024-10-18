@@ -1,5 +1,40 @@
 #!/bin/bash
 
+# 检查是否已安装 rustup，如果未安装则进行安装
+if ! command -v rustup &> /dev/null
+then
+    echo "rustup 未安装，正在安装 rustup..."
+    
+    # 下载并安装 rustup
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    
+    # 将 Rust 工具链的路径添加到环境变量
+    source $HOME/.cargo/env
+
+    echo "rustup 已安装完毕。"
+else
+    echo "rustup 已安装，跳过安装步骤。"
+fi
+
+# 验证安装
+rustc --version
+rustup --version
+
+# 安装 Rust 稳定版本
+rustup install stable
+
+# 设置国内镜像源
+mkdir -p ~/.cargo
+cat <<EOL > ~/.cargo/config.toml
+[source.crates-io]
+replace-with = 'mirror'
+
+[source.mirror]
+registry = "sparse+https://mirrors.bfsu.edu.cn/crates.io-index/"
+EOL
+
+echo "Rust 和 Cargo 已配置完成。"
+
 # 修改默认IP
 sed -i 's/192.168.1.1/10.0.0.1/g' package/base-files/files/bin/config_generate
 
