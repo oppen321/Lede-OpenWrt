@@ -53,10 +53,6 @@ jobs:
         sudo -E apt-get -y install clang
         sudo timedatectl set-timezone "$TZ"
 
-    - name: Notify Start Compilation
-      run: |
-        curl -k --data chat_id=${{ secrets.TELEGRAM_CHAT_ID }} --data "text=我亲爱的主人，正在编译${{ env.FIRMWARE_TAG }}-$(date +'%Y.%m.%d-%H%M')的固件，请耐心等待...... 😋💐，务必注意CPU性能！已知CPU型号（降序）：7763，8370C，8272CL，8171M，E5-2673。" "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage"        
-
     - name: Combine Disks
       uses: easimon/maximize-build-space@master
       with:
