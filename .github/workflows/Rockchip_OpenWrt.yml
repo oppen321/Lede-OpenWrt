@@ -138,16 +138,7 @@ jobs:
         echo "status=success" >> $GITHUB_OUTPUT
         echo "DATE=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
         echo "FILE_DATE=$(date +"%Y.%m.%d")" >> $GITHUB_ENV
-        
-    - name: Notify End Compilation
-      run: |
-        if [[ "${{ steps.compile.outputs.status }}" == "success" ]]; then
-          STATUS="成功"
-        else
-          STATUS="失败"
-        fi
-        curl -k --data chat_id=${{ secrets.TELEGRAM_CHAT_ID }} --data "text=我亲爱的主人，您要编译的${{ env.FIRMWARE_TAG }}-$(date +'%Y.%m.%d-%H%M')固件编译${STATUS}！更多信息请查看：[发布链接](https://github.com/oppen321/Lede-OpenWrt)" "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage"
-
+      
     - name: Check Space Usage
       if: (!cancelled())
       run: df -hT
