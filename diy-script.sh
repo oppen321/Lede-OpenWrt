@@ -22,7 +22,6 @@ rm -rf feeds/luci/applications/luci-app-serverchan
 rm -rf feeds/packages/lang/golang
 find ./ | grep Makefile | grep v2ray-geodata | xargs rm -f
 find ./ | grep Makefile | grep mosdns | xargs rm -f
-find . -name 205-rockchip-rk3328-add-support-for-FriendlyARM-NanoPi-Neo3.patch | xargs rm
 
 # Git稀疏克隆，只克隆指定目录到本地
 function git_sparse_clone() {
@@ -129,10 +128,6 @@ sed -i 's/6.1/6.6/g'  ./target/linux/rockchip/Makefile
 
 #修复rk35xx报错
 sed -i '/^UBOOT_TARGETS := rk3528-evb rk3588-evb/s/^/#/' package/boot/uboot-rk35xx/Makefile
-
-#修复target报错
-
-sed -i '/^define Device\/friendlyarm_nanopi-neo3$/,/^endef$/d;/^TARGET_DEVICES \+= friendlyarm_nanopi-neo3$/d' target/linux/rockchip/image/armv8.mk
 
 # 修改 Makefile
 find package/*/ -maxdepth 2 -path "*/Makefile" | xargs -i sed -i 's/..\/..\/luci.mk/$(TOPDIR)\/feeds\/luci\/luci.mk/g' {}
